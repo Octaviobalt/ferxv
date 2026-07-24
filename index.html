@@ -369,6 +369,19 @@
     color: var(--wine-deep);
   }
   .detail-meta{ font-size: 0.85rem; color: var(--ink-soft); }
+  .map-link{
+    display: inline-block;
+    margin-top: 0.9rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    color: var(--wine);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 2px;
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+  .map-link:hover{ color: var(--wine-deep); border-color: var(--wine); }
+
   .placeholder-tag{
     display: inline-block;
     margin-top: 0.8rem;
@@ -392,6 +405,14 @@
   }
 
   /* ---------- gifts ---------- */
+  .gift-intro{
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    max-width: 420px;
+    margin: 0 auto 1.8rem;
+    line-height: 1.6;
+  }
   .gift-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
   .gift-card{
     border: 1px solid var(--line);
@@ -580,9 +601,10 @@
         </div>
         <div class="detail-card">
           <div class="detail-kicker">Recepción</div>
-          <div class="detail-name">Por confirmar</div>
-          <div class="detail-meta">Salón y horario próximamente</div>
-          <span class="placeholder-tag">Pendiente</span>
+          <div class="detail-name">Salón de Eventos<br>La Escondida</div>
+          <div class="detail-meta">Prolongación Jesús, Av. Jesús Sansón Flores 55<br>Bosque Camelinas, 58290 Morelia, Mich.</div>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Sal%C3%B3n%20de%20Eventos%20La%20Escondida%2C%20Av.%20Jes%C3%BAs%20Sans%C3%B3n%20Flores%2055%2C%20Bosque%20Camelinas%2C%2058290%20Morelia%2C%20Michoac%C3%A1n" target="_blank" rel="noopener">Ver ubicación en el mapa →</a>
+          <span class="placeholder-tag">Hora por confirmar</span>
         </div>
       </div>
     </section>
@@ -604,8 +626,9 @@
   <!-- GIFTS -->
   <div class="band band-b">
     <section class="reveal">
-      <div class="section-eyebrow">Con todo cariño</div>
+      <div class="section-eyebrow">Un detalle, si así lo deseas</div>
       <div class="section-title">Mesa de regalos</div>
+      <p class="gift-intro">Tu presencia es el mejor regalo, pero si te nace tener un detalle conmigo, aquí te dejo algunas opciones:</p>
       <div class="gift-grid">
         <a class="gift-card" href="#" target="_blank" rel="noopener">
           <div class="gift-store">Amazon</div>
@@ -638,6 +661,9 @@
     <span class="fnum">XV</span>
     Fernanda Baltazar Canchola · 21.11.2026
   </footer>
+
+  <!-- Coloca aquí el archivo de tu canción con el nombre "cancion.mp3" en la misma carpeta que este index.html -->
+  <audio id="bgMusic" src="cancion.mp3" loop preload="auto"></audio>
 
   <button class="music-toggle" id="musicBtn" aria-label="Reproducir música">
     <svg viewBox="0 0 24 24">
@@ -712,51 +738,48 @@
     document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
   }
 
-  // ---------- Ambient music (generative, no copyrighted audio) ----------
-  let audioCtx, isPlaying = false, padNodes = [];
+  // ---------- Real background song ----------
+  // Los navegadores bloquean el audio con sonido hasta que hay una
+  // interacción del usuario (clic, toque o scroll). Por eso intentamos
+  // reproducir de inmediato, y si el navegador lo bloquea, la arrancamos
+  // en cuanto el invitado toque o haga scroll por primera vez —
+  // en la práctica suena "automático" para casi todos.
   const musicBtn = document.getElementById('musicBtn');
+  const bgMusic = document.getElementById('bgMusic');
+  bgMusic.volume = 0.5;
 
-  function startAmbient(){
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if(audioCtx.state === 'suspended'){ audioCtx.resume(); }
-
-    const notes = [261.63, 329.63, 392.00, 523.25]; // C4 E4 G4 C5
-    const master = audioCtx.createGain();
-    master.gain.value = 0.22;
-    master.connect(audioCtx.destination);
-
-    notes.forEach((freq, i)=>{
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = freq;
-      gain.gain.value = 0.09;
-      osc.connect(gain);
-      gain.connect(master);
-      osc.start();
-
-      // gentle breathing volume so it doesn't sound like a flat drone
-      const lfo = audioCtx.createOscillator();
-      const lfoGain = audioCtx.createGain();
-      lfo.frequency.value = 0.08 + i*0.015;
-      lfoGain.gain.value = 0.05;
-      lfo.connect(lfoGain);
-      lfoGain.connect(gain.gain);
-      lfo.start();
-
-      padNodes.push(osc, lfo);
-    });
+  function setPlayingUI(playing){
+    musicBtn.classList.toggle('playing', playing);
+    musicBtn.setAttribute('aria-label', playing ? 'Pausar música' : 'Reproducir música');
   }
 
-  function stopAmbient(){
-    if(audioCtx){ audioCtx.close(); audioCtx = null; padNodes = []; }
+  function tryAutoplay(){
+    const p = bgMusic.play();
+    if(p !== undefined){
+      p.then(()=> setPlayingUI(true))
+       .catch(()=>{
+          setPlayingUI(false);
+          const startOnFirstInteraction = ()=>{
+            bgMusic.play().then(()=> setPlayingUI(true)).catch(()=>{});
+            window.removeEventListener('click', startOnFirstInteraction);
+            window.removeEventListener('touchstart', startOnFirstInteraction);
+            window.removeEventListener('scroll', startOnFirstInteraction);
+          };
+          window.addEventListener('click', startOnFirstInteraction, { once:true });
+          window.addEventListener('touchstart', startOnFirstInteraction, { once:true });
+          window.addEventListener('scroll', startOnFirstInteraction, { once:true, passive:true });
+       });
+    }
   }
+  tryAutoplay();
 
   musicBtn.addEventListener('click', ()=>{
-    isPlaying = !isPlaying;
-    musicBtn.classList.toggle('playing', isPlaying);
-    musicBtn.setAttribute('aria-label', isPlaying ? 'Pausar música' : 'Reproducir música');
-    if(isPlaying){ startAmbient(); } else { stopAmbient(); }
+    if(bgMusic.paused){
+      bgMusic.play().then(()=> setPlayingUI(true)).catch(()=>{});
+    } else {
+      bgMusic.pause();
+      setPlayingUI(false);
+    }
   });
 </script>
 
