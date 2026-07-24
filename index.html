@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XV Años · Fernanda Baltazar Canchola</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream: #FBF6F0;
+    --blush: #F3DFDA;
+    --wine: #7A2E38;
+    --wine-deep: #55151E;
+    --gold: #C9A961;
+    --gold-soft: #E8D9B5;
+    --ink: #2B211F;
+    --ink-soft: #6b5e56;
+    --line: rgba(122,46,56,0.18);
+    --max-w: 640px;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    background: linear-gradient(135deg, var(--cream), var(--blush), var(--cream));
+    background-size: 300% 300%;
+    animation: breathe 18s ease infinite;
+    color: var(--ink);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+  @keyframes breathe{
+    0%{ background-position: 0% 50%; }
+    50%{ background-position: 100% 50%; }
+    100%{ background-position: 0% 50%; }
+  }
+
+  .display{ font-family: 'Cormorant Garamond', serif; }
+
+  section{
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 5rem 1.75rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ---------- floating petals ---------- */
+  .petals{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .petal{
+    position: absolute;
+    top: -5%;
+    opacity: 0.55;
+    animation: fall linear infinite;
+  }
+  .petal svg{ width: 100%; height: 100%; display:block; }
+  @keyframes fall{
+    0%{ transform: translateY(-10vh) translateX(0) rotate(0deg); }
+    100%{ transform: translateY(110vh) translateX(var(--drift, 40px)) rotate(340deg); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .petal{ animation: none; display:none; }
+    body{ animation: none; }
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal{
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+    transition: opacity 1s cubic-bezier(.2,.7,.3,1), transform 1s cubic-bezier(.2,.7,.3,1);
+  }
+  .reveal.in{ opacity: 1; transform: translateY(0) scale(1); }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity: 1; transform: none; transition: none; }
+    html{ scroll-behavior: auto; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    position: relative;
+  }
+
+  .hero-numeral{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(13rem, 52vw, 24rem);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    white-space: nowrap;
+    background: linear-gradient(180deg, var(--gold-soft), var(--gold) 60%, transparent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    opacity: 0.28;
+    animation: glow 6s ease-in-out infinite;
+  }
+  @keyframes glow{
+    0%,100%{ opacity: 0.2; }
+    50%{ opacity: 0.36; }
+  }
+
+  .hero-content{ position: relative; z-index: 1; }
+
+  .eyebrow{
+    font-size: 0.72rem;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--wine);
+    font-weight: 500;
+    margin-bottom: 1.6rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.2s forwards;
+  }
+
+  .hero-name{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(2.7rem, 9.5vw, 4.8rem);
+    line-height: 1.05;
+    color: var(--wine-deep);
+    margin-bottom: 1.4rem;
+    opacity: 0;
+    animation: fadeUp 1.1s ease 0.5s forwards;
+  }
+
+  .hero-line{
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 1.4rem;
+    animation: drawLine 1.2s ease 1s forwards;
+  }
+  @keyframes drawLine{ to{ width: 80px; } }
+
+  .hero-date{
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    opacity: 0;
+    animation: fadeUp 1s ease 1.3s forwards;
+  }
+
+  @keyframes fadeUp{
+    from{ opacity: 0; transform: translateY(16px); }
+    to{ opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .eyebrow,.hero-name,.hero-date{ animation: none; opacity: 1; }
+    .hero-line{ animation: none; width: 80px; }
+    .hero-numeral{ animation: none; opacity: 0.28; }
+  }
+
+  .scroll-cue{
+    position: absolute;
+    bottom: 2.4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.8s forwards;
+  }
+  .scroll-cue::after{
+    content: '';
+    width: 1px;
+    height: 26px;
+    background: var(--gold);
+    animation: cueMove 1.8s ease-in-out infinite;
+  }
+  @keyframes cueMove{
+    0%,100%{ transform: scaleY(0.4); opacity: 0.5; }
+    50%{ transform: scaleY(1); opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .scroll-cue{ animation: none; opacity: 1; }
+    .scroll-cue::after{ animation: none; }
+  }
+
+  /* ---------- section headers ---------- */
+  .section-eyebrow{
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--wine);
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 0.9rem;
+  }
+  .section-title{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
+    text-align: center;
+    margin-bottom: 2.6rem;
+    color: var(--wine-deep);
+  }
+
+  /* ---------- countdown ---------- */
+  .countdown{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.9rem;
+    text-align: center;
+  }
+  .count-box{
+    border: 1px solid var(--gold);
+    background: rgba(255,255,255,0.4);
+    padding: 1.5rem 0.4rem;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(122,46,56,0.06);
+    transition: transform 0.3s ease;
+  }
+  .count-box:hover{ transform: translateY(-3px); }
+  .count-num{
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: clamp(1.8rem, 6.4vw, 2.6rem);
+    color: var(--wine);
+    font-variant-numeric: tabular-nums;
+    display: inline-block;
+  }
+  .count-num.tick{ animation: tickPulse 0.5s ease; }
+  @keyframes tickPulse{
+    0%{ transform: scale(1.15); color: var(--gold); }
+    100%{ transform: scale(1); color: var(--wine); }
+  }
+  .count-label{
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 0.5rem;
+  }
+
+  /* ---------- dedication ---------- */
+  .dedication{ text-align: center; }
+  .dedication p{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.15rem, 3.4vw, 1.5rem);
+    color: var(--wine-deep);
+    line-height: 1.55;
+  }
+  .dedication .signature{
+    font-family: 'Jost', sans-serif;
+    font-style: normal;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 1.6rem;
+  }
+
+  /* ---------- details cards ---------- */
+  .details-grid{ display: flex; flex-direction: column; gap: 1rem; }
+  .detail-card{
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,0.45);
+    padding: 1.9rem 1.6rem;
+    text-align: center;
+    border-radius: 6px;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  }
+  .detail-card:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 10px 26px rgba(122,46,56,0.1);
+    border-color: var(--gold);
+  }
+  .detail-kicker{
+    font-size: 0.66rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 0.7rem;
+  }
+  .detail-name{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    margin-bottom: 0.4rem;
+    color: var(--wine-deep);
+  }
+  .detail-meta{ font-size: 0.85rem; color: var(--ink-soft); }
+  .placeholder-tag{
+    display: inline-block;
+    margin-top: 0.8rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--wine);
+    border: 1px solid var(--wine);
+    padding: 0.25rem 0.7rem;
+    border-radius: 20px;
+  }
+
+  .padrinos{ text-align: center; }
+  .padrinos p{ font-size: 0.95rem; color: var(--ink-soft); }
+  .padrinos .names{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--wine-deep);
+    margin-top: 0.5rem;
+  }
+
+  /* ---------- gifts ---------- */
+  .gift-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .gift-card{
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,0.45);
+    padding: 1.8rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    border-radius: 6px;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  }
+  .gift-card:hover{
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(122,46,56,0.12);
+    border-color: var(--gold);
+  }
+  .gift-store{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--wine-deep);
+  }
+  .gift-note{
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- rsvp ---------- */
+  .rsvp{ text-align: center; }
+  .rsvp-card{
+    border: 1px solid var(--gold);
+    background: rgba(255,255,255,0.5);
+    padding: 2.2rem 1.6rem;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(122,46,56,0.08);
+  }
+  .rsvp-card p{ font-size: 0.9rem; color: var(--ink-soft); margin-bottom: 0.4rem; }
+  .rsvp-name{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    margin-bottom: 0.3rem;
+    color: var(--wine-deep);
+  }
+  .rsvp-contact{ font-size: 1rem; letter-spacing: 0.03em; color: var(--wine); }
+  .rsvp-deadline{
+    margin-top: 1rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--wine);
+  }
+
+  footer{
+    text-align: center;
+    padding: 3rem 1.5rem 5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    position: relative;
+    z-index: 2;
+  }
+  footer .fnum{
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.8rem;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--wine);
+    margin-bottom: 0.6rem;
+  }
+
+  /* ---------- music toggle ---------- */
+  .music-toggle{
+    position: fixed;
+    bottom: 1.4rem;
+    right: 1.4rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--cream);
+    border: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 20;
+    box-shadow: 0 4px 18px rgba(122,46,56,0.14);
+    transition: box-shadow 0.3s ease;
+  }
+  .music-toggle.playing{
+    animation: ringPulse 2s ease-in-out infinite;
+  }
+  @keyframes ringPulse{
+    0%,100%{ box-shadow: 0 4px 18px rgba(122,46,56,0.14); }
+    50%{ box-shadow: 0 4px 24px rgba(201,169,97,0.55); }
+  }
+  .music-toggle svg{ width: 18px; height: 18px; }
+  .music-toggle .bar{
+    fill: none;
+    stroke: var(--wine);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    transform-origin: bottom;
+  }
+  .music-toggle.playing .bar1{ animation: bounce 0.9s ease-in-out infinite; }
+  .music-toggle.playing .bar2{ animation: bounce 0.9s ease-in-out infinite 0.15s; }
+  .music-toggle.playing .bar3{ animation: bounce 0.9s ease-in-out infinite 0.3s; }
+  @keyframes bounce{
+    0%,100%{ transform: scaleY(0.4); }
+    50%{ transform: scaleY(1); }
+  }
+
+  hr.divider{
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    max-width: var(--max-w);
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+</style>
+</head>
+<body>
+
+  <div class="petals" id="petals"></div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-numeral">XV</div>
+    <div class="hero-content">
+      <div class="eyebrow">Mis quince años</div>
+      <h1 class="hero-name">Fernanda<br>Baltazar Canchola</h1>
+      <div class="hero-line"></div>
+      <p class="hero-date">Sábado 21 de noviembre de 2026</p>
+    </div>
+    <div class="scroll-cue">Desliza</div>
+  </div>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="section-eyebrow">Faltan</div>
+    <div class="countdown" id="countdown">
+      <div class="count-box"><div class="count-num" id="cd-days">00</div><div class="count-label">Días</div></div>
+      <div class="count-box"><div class="count-num" id="cd-hours">00</div><div class="count-label">Horas</div></div>
+      <div class="count-box"><div class="count-num" id="cd-min">00</div><div class="count-label">Min</div></div>
+      <div class="count-box"><div class="count-num" id="cd-sec">00</div><div class="count-label">Seg</div></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal dedication">
+    <p>"Quince años esperando este momento,<br>hoy los quiero celebrar junto a ustedes."</p>
+    <div class="signature">— Con la bendición de sus papás</div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="section-eyebrow">Celebración</div>
+    <div class="section-title">Los esperamos</div>
+    <div class="details-grid">
+      <div class="detail-card">
+        <div class="detail-kicker">Ceremonia Religiosa</div>
+        <div class="detail-name">Por confirmar</div>
+        <div class="detail-meta">Hora y templo próximamente</div>
+        <span class="placeholder-tag">Pendiente</span>
+      </div>
+      <div class="detail-card">
+        <div class="detail-kicker">Recepción</div>
+        <div class="detail-name">Por confirmar</div>
+        <div class="detail-meta">Salón y horario próximamente</div>
+        <span class="placeholder-tag">Pendiente</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal padrinos">
+    <div class="section-eyebrow">Con cariño</div>
+    <p>Padrinos de honor</p>
+    <div class="names">Por confirmar</div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="section-eyebrow">Con todo cariño</div>
+    <div class="section-title">Mesa de regalos</div>
+    <div class="gift-grid">
+      <a class="gift-card" href="#" target="_blank" rel="noopener">
+        <div class="gift-store">Amazon</div>
+        <div class="gift-note">Agregar link</div>
+      </a>
+      <a class="gift-card" href="#" target="_blank" rel="noopener">
+        <div class="gift-store">Liverpool</div>
+        <div class="gift-note">Agregar link</div>
+      </a>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal rsvp">
+    <div class="section-eyebrow">Confirma tu asistencia</div>
+    <div class="rsvp-card">
+      <p>Tu presencia significa mucho para nosotros</p>
+      <div class="rsvp-name">Confirmar con</div>
+      <div class="rsvp-contact">Nombre · WhatsApp por confirmar</div>
+      <div class="rsvp-deadline">Antes del 01 de noviembre</div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="fnum">XV</span>
+    Fernanda Baltazar Canchola · 21.11.2026
+  </footer>
+
+  <button class="music-toggle" id="musicBtn" aria-label="Reproducir música">
+    <svg viewBox="0 0 24 24">
+      <line class="bar bar1" x1="7" y1="16" x2="7" y2="8"></line>
+      <line class="bar bar2" x1="12" y1="18" x2="12" y2="6"></line>
+      <line class="bar bar3" x1="17" y1="16" x2="17" y2="10"></line>
+    </svg>
+  </button>
+
+<script>
+  // ---------- Petals ----------
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduceMotion){
+    const petalContainer = document.getElementById('petals');
+    const colors = ['#7A2E38', '#C9A961', '#F3DFDA'];
+    for(let i=0; i<10; i++){
+      const p = document.createElement('div');
+      p.className = 'petal';
+      const size = 10 + Math.random()*10;
+      const left = Math.random()*100;
+      const duration = 12 + Math.random()*10;
+      const delay = Math.random()*14;
+      const drift = (Math.random()*80 - 40) + 'px';
+      const color = colors[Math.floor(Math.random()*colors.length)];
+      p.style.left = left + 'vw';
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      p.style.animationDuration = duration + 's';
+      p.style.animationDelay = delay + 's';
+      p.style.setProperty('--drift', drift);
+      p.innerHTML = '<svg viewBox="0 0 20 20"><path d="M10 0 C14 4 20 6 10 20 C0 6 6 4 10 0 Z" fill="'+color+'"/></svg>';
+      petalContainer.appendChild(p);
+    }
+  }
+
+  // ---------- Countdown ----------
+  const targetDate = new Date('2026-11-21T00:00:00');
+  let lastSec = null;
+  function updateCountdown(){
+    const now = new Date();
+    let diff = targetDate - now;
+    if(diff < 0) diff = 0;
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff / (1000*60*60)) % 24);
+    const mins = Math.floor((diff / (1000*60)) % 60);
+    const secs = Math.floor((diff / 1000) % 60);
+    document.getElementById('cd-days').textContent = String(days).padStart(2,'0');
+    document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+    document.getElementById('cd-min').textContent = String(mins).padStart(2,'0');
+    const secEl = document.getElementById('cd-sec');
+    secEl.textContent = String(secs).padStart(2,'0');
+    if(secs !== lastSec && !reduceMotion){
+      secEl.classList.remove('tick');
+      void secEl.offsetWidth;
+      secEl.classList.add('tick');
+      lastSec = secs;
+    }
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // ---------- Scroll reveal ----------
+  if(!reduceMotion && 'IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+  }
+
+  // ---------- Ambient music (generative, no copyrighted audio) ----------
+  let audioCtx, isPlaying = false, padNodes = [];
+  const musicBtn = document.getElementById('musicBtn');
+
+  function startAmbient(){
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [261.63, 329.63, 392.00, 523.25];
+    const master = audioCtx.createGain();
+    master.gain.value = 0.05;
+    master.connect(audioCtx.destination);
+
+    notes.forEach((freq, i)=>{
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.value = 0;
+      osc.connect(gain);
+      gain.connect(master);
+      osc.start();
+
+      const lfo = audioCtx.createOscillator();
+      const lfoGain = audioCtx.createGain();
+      lfo.frequency.value = 0.05 + i*0.01;
+      lfoGain.gain.value = 0.03;
+      lfo.connect(lfoGain);
+      lfoGain.connect(gain.gain);
+      lfo.start();
+      gain.gain.value = 0.02;
+
+      padNodes.push(osc, lfo);
+    });
+  }
+
+  function stopAmbient(){
+    if(audioCtx){ audioCtx.close(); audioCtx = null; padNodes = []; }
+  }
+
+  musicBtn.addEventListener('click', ()=>{
+    isPlaying = !isPlaying;
+    musicBtn.classList.toggle('playing', isPlaying);
+    musicBtn.setAttribute('aria-label', isPlaying ? 'Pausar música' : 'Reproducir música');
+    if(isPlaying){ startAmbient(); } else { stopAmbient(); }
+  });
+</script>
+
+</body>
+</html>
