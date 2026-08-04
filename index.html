@@ -40,39 +40,42 @@
 
   .display{ font-family: 'Cormorant Garamond', serif; }
 
-  /* ---------- ambient breathing background ---------- */
+  /* ---------- ambient moving colour wash (clearly visible motion) ---------- */
   body::before{
     content:'';
     position: fixed;
-    inset: 0;
+    inset: -20%;
     z-index: -3;
-    background:
-      radial-gradient(ellipse at 15% 10%, rgba(198,168,92,0.20), transparent 50%),
-      radial-gradient(ellipse at 88% 18%, rgba(22,35,63,0.10), transparent 48%),
-      radial-gradient(ellipse at 75% 78%, rgba(198,168,92,0.14), transparent 50%),
-      radial-gradient(ellipse at 10% 85%, rgba(22,35,63,0.08), transparent 50%),
-      radial-gradient(ellipse at 50% 45%, rgba(198,168,92,0.06), transparent 60%);
-    animation: breathe 13s ease-in-out infinite;
+    background: linear-gradient(120deg,
+      rgba(198,168,92,0.22) 0%,
+      rgba(250,246,236,0) 22%,
+      rgba(22,35,63,0.14) 45%,
+      rgba(250,246,236,0) 68%,
+      rgba(198,168,92,0.20) 88%,
+      rgba(22,35,63,0.10) 100%);
+    background-size: 300% 300%;
+    animation: meshMove 20s ease-in-out infinite;
   }
-  @keyframes breathe{
-    0%,100%{ opacity:0.6; transform: scale(1) translate(0,0); }
-    50%{ opacity:1; transform: scale(1.08) translate(-1%, 1%); }
+  @keyframes meshMove{
+    0%{ background-position: 10% 20%; }
+    50%{ background-position: 90% 80%; }
+    100%{ background-position: 10% 20%; }
   }
 
-  /* second, slower-drifting layer for a bit of parallax depth */
+  /* second, slower-drifting layer of soft glows for extra depth */
   body::after{
     content:'';
     position: fixed;
-    inset: -10%;
+    inset: -20%;
     z-index: -2;
     background:
-      radial-gradient(ellipse at 30% 70%, rgba(22,35,63,0.06), transparent 55%),
-      radial-gradient(ellipse at 70% 25%, rgba(198,168,92,0.10), transparent 55%);
-    animation: drift 26s ease-in-out infinite;
+      radial-gradient(ellipse at 30% 70%, rgba(198,168,92,0.16), transparent 45%),
+      radial-gradient(ellipse at 75% 25%, rgba(22,35,63,0.12), transparent 45%);
+    animation: drift 16s ease-in-out infinite;
   }
   @keyframes drift{
     0%,100%{ transform: translate(0,0) scale(1); }
-    50%{ transform: translate(2%,-2%) scale(1.05); }
+    50%{ transform: translate(6%,-6%) scale(1.12); }
   }
 
   /* fine paper-like grain so flat colour fields feel less flat */
@@ -116,6 +119,33 @@
     50%{ transform: translate(var(--drift, 40px), 55vh) rotate(180deg); }
     92%{ opacity: 0.5; }
     100%{ transform: translate(calc(var(--drift, 40px) * -1), 112vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* ---------- twinkling sparkles (a different kind of motion than the colour wash) ---------- */
+  .sparkles-bg{
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .sparkle{
+    position: absolute;
+    left: var(--left, 50%);
+    top: var(--top, 50%);
+    width: var(--size, 3px);
+    height: var(--size, 3px);
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff, var(--gold) 55%, transparent 75%);
+    box-shadow: 0 0 6px 1px rgba(198,168,92,0.55);
+    opacity: 0;
+    animation: twinkle ease-in-out infinite;
+    animation-duration: var(--dur, 4s);
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes twinkle{
+    0%,100%{ opacity: 0; transform: scale(0.5); }
+    50%{ opacity: 0.95; transform: scale(1); }
   }
 
   section{
@@ -705,6 +735,9 @@
   <!-- textura sutil para que el fondo no se vea plano -->
   <div class="grain"></div>
 
+  <!-- destellos dorados titilando por el fondo -->
+  <div class="sparkles-bg" id="sparklesBg"></div>
+
   <!-- pétalos decorativos, siempre activos (a propósito, sin depender de prefers-reduced-motion) -->
   <div class="petals-bg" id="petalsBg"></div>
 
@@ -923,6 +956,27 @@
   } else {
     document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
   }
+
+  // ---------- Twinkling sparkles ----------
+  (function(){
+    const container = document.getElementById('sparklesBg');
+    const COUNT = 40;
+    for(let i=0; i<COUNT; i++){
+      const s = document.createElement('div');
+      s.className = 'sparkle';
+      const size = 2 + Math.random()*3;
+      const left = Math.random()*100;
+      const top = Math.random()*100;
+      const dur = 2.5 + Math.random()*4;
+      const delay = -Math.random()*6;
+      s.style.setProperty('--size', size.toFixed(1)+'px');
+      s.style.setProperty('--left', left.toFixed(1)+'%');
+      s.style.setProperty('--top', top.toFixed(1)+'%');
+      s.style.setProperty('--dur', dur.toFixed(1)+'s');
+      s.style.setProperty('--delay', delay.toFixed(1)+'s');
+      container.appendChild(s);
+    }
+  })();
 
   // ---------- Falling petals (decorative; intentionally always on) ----------
   (function(){
