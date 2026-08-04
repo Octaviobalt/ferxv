@@ -45,16 +45,45 @@
     content:'';
     position: fixed;
     inset: 0;
-    z-index: -2;
+    z-index: -3;
     background:
-      radial-gradient(ellipse at 18% 15%, rgba(198,168,92,0.16), transparent 55%),
-      radial-gradient(ellipse at 85% 25%, rgba(22,35,63,0.07), transparent 50%),
-      radial-gradient(ellipse at 50% 90%, rgba(198,168,92,0.10), transparent 55%);
+      radial-gradient(ellipse at 15% 10%, rgba(198,168,92,0.20), transparent 50%),
+      radial-gradient(ellipse at 88% 18%, rgba(22,35,63,0.10), transparent 48%),
+      radial-gradient(ellipse at 75% 78%, rgba(198,168,92,0.14), transparent 50%),
+      radial-gradient(ellipse at 10% 85%, rgba(22,35,63,0.08), transparent 50%),
+      radial-gradient(ellipse at 50% 45%, rgba(198,168,92,0.06), transparent 60%);
     animation: breathe 13s ease-in-out infinite;
   }
   @keyframes breathe{
-    0%,100%{ opacity:0.55; transform: scale(1); }
-    50%{ opacity:1; transform: scale(1.07); }
+    0%,100%{ opacity:0.6; transform: scale(1) translate(0,0); }
+    50%{ opacity:1; transform: scale(1.08) translate(-1%, 1%); }
+  }
+
+  /* second, slower-drifting layer for a bit of parallax depth */
+  body::after{
+    content:'';
+    position: fixed;
+    inset: -10%;
+    z-index: -2;
+    background:
+      radial-gradient(ellipse at 30% 70%, rgba(22,35,63,0.06), transparent 55%),
+      radial-gradient(ellipse at 70% 25%, rgba(198,168,92,0.10), transparent 55%);
+    animation: drift 26s ease-in-out infinite;
+  }
+  @keyframes drift{
+    0%,100%{ transform: translate(0,0) scale(1); }
+    50%{ transform: translate(2%,-2%) scale(1.05); }
+  }
+
+  /* fine paper-like grain so flat colour fields feel less flat */
+  .grain{
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   /* ---------- falling petals (decorative, always on) ---------- */
@@ -75,8 +104,11 @@
     border-radius: 0 100% 0 100%;
     opacity: 0;
     animation: fall linear infinite;
-    animation-duration: var(--dur, 16s);
+    animation-duration: var(--dur, 10s);
     animation-delay: var(--delay, 0s);
+  }
+  .petal.navy{
+    background: linear-gradient(135deg, var(--navy-soft), var(--navy));
   }
   @keyframes fall{
     0%{ transform: translate(0,0) rotate(0deg); opacity: 0; }
@@ -156,7 +188,7 @@
   .hero-content{ position: relative; z-index: 1; }
 
   .eyebrow{
-    font-size: 0.72rem;
+    font-size: 0.81rem;
     letter-spacing: 0.32em;
     text-transform: uppercase;
     color: var(--gold-deep);
@@ -185,7 +217,7 @@
   @keyframes drawLine{ from{ transform: scaleX(0); } to{ transform: scaleX(1); } }
 
   .hero-date{
-    font-size: 0.95rem;
+    font-size: 1.04rem;
     letter-spacing: 0.06em;
     color: var(--navy-soft);
   }
@@ -195,7 +227,7 @@
     bottom: 2.4rem;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 0.65rem;
+    font-size: 0.74rem;
     letter-spacing: 0.28em;
     text-transform: uppercase;
     color: var(--navy-soft);
@@ -223,7 +255,7 @@
 
   /* ---------- section headers ---------- */
   .section-eyebrow{
-    font-size: 0.68rem;
+    font-size: 0.77rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--gold-deep);
@@ -255,7 +287,7 @@
     text-align: center;
     padding: 1.2rem;
     color: var(--navy-soft);
-    font-size: 0.78rem;
+    font-size: 0.87rem;
     letter-spacing: 0.04em;
     background: rgba(198,168,92,0.05);
     overflow: hidden;
@@ -296,7 +328,7 @@
     #cd-sec{ animation: none; }
   }
   .count-label{
-    font-size: 0.62rem;
+    font-size: 0.71rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--navy-soft);
@@ -315,7 +347,7 @@
   .dedication .signature{
     font-family: 'Jost', sans-serif;
     font-style: normal;
-    font-size: 0.75rem;
+    font-size: 0.84rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--navy-soft);
@@ -331,7 +363,7 @@
     background: rgba(255,255,255,0.35);
   }
   .detail-kicker{
-    font-size: 0.66rem;
+    font-size: 0.75rem;
     letter-spacing: 0.24em;
     text-transform: uppercase;
     color: var(--gold-deep);
@@ -343,11 +375,11 @@
     font-size: 1.4rem;
     margin-bottom: 0.4rem;
   }
-  .detail-meta{ font-size: 0.85rem; color: var(--navy-soft); line-height: 1.5; }
+  .detail-meta{ font-size: 0.94rem; color: var(--navy-soft); line-height: 1.5; }
   .detail-link{
     display: inline-block;
     margin-top: 0.6rem;
-    font-size: 0.78rem;
+    font-size: 0.87rem;
     letter-spacing: 0.04em;
     color: var(--gold-deep);
     text-decoration: underline;
@@ -355,7 +387,7 @@
   .placeholder-tag{
     display: inline-block;
     margin-top: 0.7rem;
-    font-size: 0.65rem;
+    font-size: 0.74rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--gold-deep);
@@ -403,7 +435,7 @@
     padding-bottom: 2.2rem;
   }
   .itinerary-kicker{
-    font-size: 0.66rem;
+    font-size: 0.75rem;
     letter-spacing: 0.24em;
     text-transform: uppercase;
     color: var(--gold-deep);
@@ -417,14 +449,14 @@
     margin-bottom: 0.3rem;
   }
   .itinerary-meta{
-    font-size: 0.82rem;
+    font-size: 0.91rem;
     color: var(--navy-soft);
     line-height: 1.55;
   }
   .itinerary-tag{
     display: inline-block;
     margin-top: 0.5rem;
-    font-size: 0.62rem;
+    font-size: 0.71rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--gold-deep);
@@ -443,14 +475,14 @@
     letter-spacing: 0.02em;
   }
   .dresscode-note{
-    font-size: 0.8rem;
+    font-size: 0.89rem;
     color: var(--navy-soft);
     margin-top: 0.6rem;
   }
 
   /* padrinos */
   .padrinos{ text-align: center; }
-  .padrinos p{ font-size: 0.95rem; color: var(--navy-soft); }
+  .padrinos p{ font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-style: italic; color: var(--navy-soft); line-height: 1.5; }
   .padrinos .names{
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
@@ -462,7 +494,7 @@
   /* ---------- gifts ---------- */
   .gift-intro{
     text-align: center;
-    font-size: 0.92rem;
+    font-size: 1.01rem;
     color: var(--navy-soft);
     max-width: 480px;
     margin: 0 auto 2rem;
@@ -489,7 +521,7 @@
     font-size: 1.25rem;
   }
   .gift-note{
-    font-size: 0.68rem;
+    font-size: 0.77rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--navy-soft);
@@ -502,7 +534,7 @@
     padding: 2rem 1.6rem;
     background: rgba(255,255,255,0.35);
   }
-  .rsvp-card p{ font-size: 0.9rem; color: var(--navy-soft); margin-bottom: 0.4rem; }
+  .rsvp-card p{ font-size: 0.99rem; color: var(--navy-soft); margin-bottom: 0.4rem; }
   .rsvp-name{
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
@@ -512,7 +544,7 @@
   .rsvp-contact{ font-size: 1rem; letter-spacing: 0.03em; color: var(--gold-deep); }
   .rsvp-deadline{
     margin-top: 1rem;
-    font-size: 0.68rem;
+    font-size: 0.77rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--gold-deep);
@@ -526,7 +558,7 @@
     border: 1px solid var(--gold);
     color: var(--navy);
     text-decoration: none;
-    font-size: 0.82rem;
+    font-size: 0.91rem;
     letter-spacing: 0.04em;
     border-radius: 999px;
     transition: background 0.25s ease, color 0.25s ease;
@@ -542,7 +574,7 @@
     gap: 0.5rem;
   }
   .guests-label{
-    font-size: 0.66rem;
+    font-size: 0.75rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--navy-soft);
@@ -581,7 +613,7 @@
   footer{
     text-align: center;
     padding: 3rem 1.5rem 2rem;
-    font-size: 0.7rem;
+    font-size: 0.79rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--navy-soft);
@@ -599,7 +631,7 @@
   .credit{
     text-align: center;
     padding: 0 1.5rem 3rem;
-    font-size: 0.6rem;
+    font-size: 0.69rem;
     letter-spacing: 0.06em;
     color: var(--navy-soft);
     opacity: 0.6;
@@ -645,7 +677,7 @@
     right: 1.4rem;
     background: var(--navy);
     color: var(--cream);
-    font-size: 0.75rem;
+    font-size: 0.84rem;
     letter-spacing: 0.02em;
     padding: 0.55rem 0.9rem;
     border-radius: 999px;
@@ -669,6 +701,9 @@
 </style>
 </head>
 <body>
+
+  <!-- textura sutil para que el fondo no se vea plano -->
+  <div class="grain"></div>
 
   <!-- pétalos decorativos, siempre activos (a propósito, sin depender de prefers-reduced-motion) -->
   <div class="petals-bg" id="petalsBg"></div>
@@ -715,8 +750,8 @@
   <!-- DEDICATION -->
   <div class="band band-cream">
     <section class="reveal dedication">
-      <p>"Quince años esperando este momento,<br>hoy los quiero celebrar junto a ustedes."</p>
-      <div class="signature">— Con la bendición de<br>Cristina Canchola Zamudio y Octavio Baltazar Reynoso</div>
+      <p>"Quince años no son un final,<br>son la primera página de una historia que apenas comienza."</p>
+      <div class="signature">— Con la bendición de mis padres<br>Cristina Canchola Zamudio y Octavio Baltazar Reynoso</div>
     </section>
   </div>
 
@@ -780,8 +815,9 @@
   <!-- PADRINOS -->
   <div class="band band-cream">
     <section class="reveal padrinos">
-      <div class="section-eyebrow">Con cariño</div>
-      <p>Padrinos de honor</p>
+      <div class="section-eyebrow">Con gratitud</div>
+      <div class="section-title">Padrinos de honor</div>
+      <p>Quienes con su cariño y ejemplo<br>acompañan este día tan especial</p>
       <!-- EDITAR AQUÍ: nombres de los padrinos -->
       <div class="names">Por confirmar</div>
     </section>
@@ -891,14 +927,14 @@
   // ---------- Falling petals (decorative; intentionally always on) ----------
   (function(){
     const container = document.getElementById('petalsBg');
-    const COUNT = 16;
+    const COUNT = 30;
     for(let i=0; i<COUNT; i++){
       const p = document.createElement('div');
-      p.className = 'petal';
-      const size = 8 + Math.random()*8;
+      p.className = 'petal' + (Math.random() > 0.65 ? ' navy' : '');
+      const size = 7 + Math.random()*8;
       const left = Math.random()*100;
-      const dur = 12 + Math.random()*10;
-      const delay = -Math.random()*20; // stagger so they're mid-fall on load
+      const dur = 7 + Math.random()*7; // caen más seguido
+      const delay = -Math.random()*14; // stagger so they're mid-fall on load
       const drift = (20 + Math.random()*40) * (Math.random() > 0.5 ? 1 : -1);
       p.style.setProperty('--size', size.toFixed(1)+'px');
       p.style.setProperty('--left', left.toFixed(1)+'%');
