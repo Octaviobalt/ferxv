@@ -19,6 +19,7 @@
     --gold: #C6A85C;
     --gold-soft: #E4D9B4;
     --gold-deep: #A3823C;
+    --royal-blue: #1B3F94;
     --line: rgba(22,35,63,0.14);
     --max-w: 640px;
   }
@@ -36,6 +37,13 @@
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     position: relative;
+  }
+
+  /* mientras el sobre no se ha abierto, bloqueamos el scroll para que no se
+     alcance a ver la invitación por debajo */
+  body.gate-active{
+    overflow: hidden;
+    height: 100vh;
   }
 
   .display{ font-family: 'Cormorant Garamond', serif; }
@@ -172,7 +180,139 @@
     html{ scroll-behavior: auto; }
   }
 
-  /* ---------- hero ---------- */
+  /* ============================================================
+     SOBRE DE ENTRADA (envelope gate) — se ve primero, al dar clic
+     se abre con animación y revela la invitación completa
+     ============================================================ */
+  .envelope-gate{
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.8rem;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    background: linear-gradient(160deg, var(--cream) 0%, var(--pale-blue) 100%);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .envelope-gate.closing{
+    opacity: 0;
+    transform: scale(1.05);
+    pointer-events: none;
+  }
+  .envelope-gate-eyebrow{
+    font-size: 0.78rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .envelope-gate-title{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.5rem, 6vw, 2.3rem);
+    color: var(--navy);
+  }
+
+  .envelope{
+    position: relative;
+    width: 190px;
+    height: 132px;
+    perspective: 900px;
+  }
+  .envelope-back{
+    position: absolute;
+    inset: 0;
+    background: var(--cream-deep);
+    border: 1.5px solid var(--gold);
+    border-radius: 3px;
+    box-shadow: 0 10px 26px rgba(22,35,63,0.14);
+  }
+  .envelope-letter{
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 20px;
+    bottom: 8px;
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    transform: translateY(0);
+    transition: transform 0.9s ease 0.15s;
+  }
+  .envelope-letter::before{
+    content: '';
+    width: 34px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .envelope-flap{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 95px solid transparent;
+    border-right: 95px solid transparent;
+    border-top: 80px solid var(--gold-soft);
+    transform-origin: top center;
+    transform: rotateX(0deg);
+    transition: transform 0.9s cubic-bezier(.4,.2,.2,1);
+    filter: drop-shadow(0 3px 4px rgba(22,35,63,0.18));
+    z-index: 2;
+  }
+  .envelope-seal{
+    position: absolute;
+    top: 48px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--gold-soft), var(--gold) 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--cream);
+    font-size: 1.15rem;
+    box-shadow: 0 3px 8px rgba(22,35,63,0.28);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    z-index: 3;
+  }
+  .envelope.open .envelope-flap{ transform: rotateX(180deg); }
+  .envelope.open .envelope-seal{ opacity: 0; transform: translate(-50%,-50%) scale(0.4); }
+  .envelope.open .envelope-letter{ transform: translateY(-62px); }
+
+  .envelope-gate-hint{
+    font-size: 0.76rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--navy-soft);
+    animation: hintPulse 2s ease-in-out infinite;
+  }
+  @keyframes hintPulse{
+    0%,100%{ opacity: 0.5; }
+    50%{ opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .envelope-gate{ transition: none; }
+    .envelope-flap, .envelope-letter, .envelope-seal{ transition: none; }
+    .envelope-gate-hint{ animation: none; }
+  }
+
+  /* ---------- hero / título ---------- */
   .hero{
     min-height: 100svh;
     display: flex;
@@ -322,13 +462,32 @@
     background: rgba(198,168,92,0.05);
     overflow: hidden;
   }
-  /* Cuando tengan la foto: reemplacen el contenido de .photo-frame por
+  /* variante chica, para la foto debajo del título */
+  .photo-frame-sm{
+    width: 140px;
+    height: 140px;
+    font-size: 0.76rem;
+  }
+  /* Cuando tengan la foto: reemplacen el contenido del marco por
      <img src="foto-fernanda.jpg" alt="Fernanda" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"> */
   .photo-frame img{
     width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
   }
 
   /* ---------- countdown ---------- */
+  .celebration-line{
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 3.4vw, 1.4rem);
+    color: var(--navy);
+    line-height: 1.65;
+    margin-bottom: 2.4rem;
+  }
+  .celebration-line strong{
+    font-weight: 500;
+    color: var(--gold-deep);
+  }
   .countdown{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -365,23 +524,29 @@
     margin-top: 0.5rem;
   }
 
-  /* ---------- dedication ---------- */
-  .dedication{ text-align: center; }
-  .dedication p{
+  /* ---------- bendición y padrinos ---------- */
+  .blessing{ text-align: center; }
+  .blessing-line{
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-size: clamp(1.15rem, 3.4vw, 1.5rem);
     color: var(--navy);
     line-height: 1.55;
   }
-  .dedication .signature{
+  .blessing .signature{
     font-family: 'Jost', sans-serif;
     font-style: normal;
-    font-size: 0.84rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
     color: var(--navy-soft);
-    margin-top: 1.6rem;
+    margin-top: 1rem;
+  }
+  .blessing-divider{
+    border: none;
+    height: 1px;
+    background: var(--line);
+    max-width: 220px;
+    margin: 2.2rem auto;
   }
 
   /* ---------- details cards ---------- */
@@ -464,6 +629,7 @@
     text-align: left;
     padding-bottom: 2.2rem;
   }
+  .itinerary-item:last-child .itinerary-content{ padding-bottom: 0; }
   .itinerary-kicker{
     font-size: 0.75rem;
     letter-spacing: 0.24em;
@@ -500,17 +666,33 @@
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-weight: 500;
-    font-size: clamp(1.6rem, 6vw, 2.1rem);
+    font-size: clamp(1.8rem, 7vw, 2.4rem);
     color: var(--navy);
     letter-spacing: 0.02em;
   }
-  .dresscode-note{
-    font-size: 0.89rem;
+  .dresscode-badge{
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 1.1rem;
+    justify-content: center;
+  }
+  .dresscode-dot{
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: var(--royal-blue);
+    box-shadow: 0 0 0 3px rgba(27,63,148,0.14);
+    flex-shrink: 0;
+  }
+  .dresscode-dot-label{
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
     color: var(--navy-soft);
-    margin-top: 0.6rem;
+    text-align: left;
   }
 
-  /* padrinos */
+  /* padrinos (heredado, ya no se usa como sección aparte pero se deja por si se reutiliza) */
   .padrinos{ text-align: center; }
   .padrinos p{ font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-style: italic; color: var(--navy-soft); line-height: 1.5; }
   .padrinos .names{
@@ -601,7 +783,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
   }
   .guests-label{
     font-size: 0.75rem;
@@ -609,34 +791,46 @@
     text-transform: uppercase;
     color: var(--navy-soft);
   }
-  .stepper{
-    display: flex;
-    align-items: center;
-    gap: 1.1rem;
-  }
-  .step-btn{
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    border: 1px solid var(--gold);
-    background: transparent;
-    color: var(--navy);
-    font-size: 1.1rem;
-    line-height: 1;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s ease, color 0.2s ease;
-  }
-  .step-btn:hover{ background: var(--gold); color: var(--cream); }
-  .step-count{
+  .rsvp-input{
+    width: 92px;
+    text-align: center;
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-size: 1.7rem;
     color: var(--navy);
-    min-width: 1.6rem;
-    text-align: center;
+    background: transparent;
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    padding: 0.45rem 0.3rem;
+    -moz-appearance: textfield;
+  }
+  .rsvp-input::-webkit-outer-spin-button,
+  .rsvp-input::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .rsvp-input:focus{
+    outline: none;
+    border-color: var(--gold-deep);
+    box-shadow: 0 0 0 3px rgba(198,168,92,0.16);
+  }
+
+  /* ---------- cierre ---------- */
+  .closing{ text-align: center; }
+  .closing-text{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(2.1rem, 7vw, 3rem);
+    color: var(--navy);
+    margin-bottom: 0.7rem;
+  }
+  .closing-name{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.4rem, 5vw, 1.9rem);
+    color: var(--gold-deep);
+    letter-spacing: 0.08em;
   }
 
   /* ---------- footer ---------- */
@@ -730,7 +924,20 @@
   }
 </style>
 </head>
-<body>
+<body class="gate-active">
+
+  <!-- ===================== SOBRE DE ENTRADA ===================== -->
+  <div class="envelope-gate" id="envelopeGate">
+    <div class="envelope-gate-eyebrow">Mis quince años</div>
+    <div class="envelope-gate-title">Fernanda Baltazar Canchola</div>
+    <div class="envelope" id="envelope">
+      <div class="envelope-back"></div>
+      <div class="envelope-letter"></div>
+      <div class="envelope-flap"></div>
+      <div class="envelope-seal">F</div>
+    </div>
+    <div class="envelope-gate-hint">Toca para abrir tu invitación</div>
+  </div>
 
   <!-- textura sutil para que el fondo no se vea plano -->
   <div class="grain"></div>
@@ -741,24 +948,12 @@
   <!-- pétalos decorativos, siempre activos (a propósito, sin depender de prefers-reduced-motion) -->
   <div class="petals-bg" id="petalsBg"></div>
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-numeral">XV</div>
-    <div class="hero-content">
-      <div class="eyebrow">Mis quince años</div>
-      <h1 class="hero-name">Fernanda<br>Baltazar Canchola</h1>
-      <div class="hero-line"></div>
-      <p class="hero-date">Sábado 21 de noviembre de 2026</p>
-    </div>
-    <div class="scroll-cue">Desliza</div>
-  </div>
-
-  <!-- FOTO -->
+  <!-- FOTO 1: grande, lo primero que se ve al abrir el sobre -->
   <div class="band band-cream">
     <section class="reveal">
       <div class="section-eyebrow">Un momento para recordar</div>
       <div class="photo-wrap">
-        <div class="photo-frame" id="photoFrame">
+        <div class="photo-frame" id="photoFrame1">
           Foto de Fernanda<br>próximamente
           <!-- EDITAR AQUÍ: reemplacen este texto por
                <img src="foto-fernanda.jpg" alt="Fernanda"> -->
@@ -767,24 +962,45 @@
     </section>
   </div>
 
-  <!-- COUNTDOWN -->
+  <!-- TÍTULO -->
+  <div class="hero">
+    <div class="hero-numeral">XV</div>
+    <div class="hero-content">
+      <h1 class="hero-name">Mis XV años<br>Fer</h1>
+      <div class="hero-line"></div>
+      <div class="photo-wrap">
+        <div class="photo-frame photo-frame-sm" id="photoFrameSmall">
+          Foto
+          <!-- EDITAR AQUÍ: reemplacen este texto por
+               <img src="foto-fernanda-2.jpg" alt="Fernanda"> -->
+        </div>
+      </div>
+    </div>
+    <div class="scroll-cue">Desliza</div>
+  </div>
+
+  <!-- BENDICIÓN Y PADRINOS -->
   <div class="band band-blue">
+    <section class="reveal blessing">
+      <p class="blessing-line">Con la bendición de Dios<br>y de mis padres</p>
+      <div class="signature">Cristina Canchola Zamudio<br>Octavio Baltazar Reynoso</div>
+      <hr class="blessing-divider">
+      <p class="blessing-line">Y acompañados con enorme gratitud<br>por mis padrinos</p>
+      <div class="signature">Veronica Canchola Zamudio<br>Rene Rodrigo Ramos García</div>
+    </section>
+  </div>
+
+  <!-- CELEBRACIÓN + CONTADOR -->
+  <div class="band band-cream">
     <section class="reveal">
-      <div class="section-eyebrow">Faltan</div>
+      <div class="section-eyebrow">Celebración</div>
+      <p class="celebration-line">La cual se llevará a cabo el día<br><strong>sábado 21 de noviembre de 2026</strong></p>
       <div class="countdown" id="countdown">
         <div class="count-box"><div class="count-num" id="cd-days">00</div><div class="count-label">Días</div></div>
         <div class="count-box"><div class="count-num" id="cd-hours">00</div><div class="count-label">Horas</div></div>
         <div class="count-box"><div class="count-num" id="cd-min">00</div><div class="count-label">Min</div></div>
         <div class="count-box"><div class="count-num" id="cd-sec">00</div><div class="count-label">Seg</div></div>
       </div>
-    </section>
-  </div>
-
-  <!-- DEDICATION -->
-  <div class="band band-cream">
-    <section class="reveal dedication">
-      <p>"Quince años no son un final,<br>son la primera página de una historia que apenas comienza."</p>
-      <div class="signature">— Con la bendición de mis padres<br>Cristina Canchola Zamudio y Octavio Baltazar Reynoso</div>
     </section>
   </div>
 
@@ -815,7 +1031,6 @@
           <div class="itinerary-time-col"><div class="itinerary-time">7:00 pm</div></div>
           <div class="itinerary-rail">
             <div class="itinerary-dot"></div>
-            <div class="itinerary-line"></div>
           </div>
           <div class="itinerary-content">
             <div class="itinerary-kicker">Recepción</div>
@@ -829,57 +1044,24 @@
           </div>
         </div>
 
-        <!-- Código de vestimenta -->
-        <div class="itinerary-item">
-          <div class="itinerary-time-col"></div>
-          <div class="itinerary-rail">
-            <div class="itinerary-dot"></div>
-          </div>
-          <div class="itinerary-content">
-            <div class="itinerary-kicker">Código de vestimenta</div>
-            <div class="itinerary-title">Formal / Gala</div>
-          </div>
-        </div>
-
       </div>
     </section>
   </div>
 
-  <!-- PADRINOS -->
+  <!-- CÓDIGO DE VESTIMENTA -->
   <div class="band band-cream">
-    <section class="reveal padrinos">
-      <div class="section-eyebrow">Con gratitud</div>
-      <div class="section-title">Padrinos de honor</div>
-      <p>Quienes con su cariño y ejemplo<br>acompañan este día tan especial</p>
-      <!-- EDITAR AQUÍ: nombres de los padrinos -->
-      <div class="names">Por confirmar</div>
-    </section>
-  </div>
-
-  <!-- GIFTS -->
-  <div class="band band-blue">
-    <section class="reveal">
-      <div class="section-eyebrow">Con todo cariño</div>
-      <div class="section-title">Mesa de regalos</div>
-      <p class="gift-intro">Tu presencia es el mejor regalo, pero si te nace tener un detalle conmigo, aquí te dejo algunas opciones:</p>
-      <div class="gift-grid">
-        <!-- EDITAR AQUÍ: reemplacen href="#" por el link real de Amazon -->
-        <a class="gift-card" href="#" target="_blank" rel="noopener">
-          <div class="gift-store">Amazon</div>
-          <div class="gift-note">Agregar link</div>
-        </a>
-        <!-- EDITAR AQUÍ: en cuanto tengan el link directo, cambien el href="#" por ese link
-             y borren el texto del folio (ya no haría falta buscarlo a mano) -->
-        <a class="gift-card" href="https://www.liverpool.com.mx/tienda/mesa-de-regalos" target="_blank" rel="noopener">
-          <div class="gift-store">Liverpool</div>
-          <div class="gift-note">Evento No. 52033529</div>
-        </a>
+    <section class="reveal dresscode">
+      <div class="section-eyebrow">Código de vestimenta</div>
+      <div class="dresscode-title">Formal</div>
+      <div class="dresscode-badge">
+        <span class="dresscode-dot"></span>
+        <span class="dresscode-dot-label">Color azul rey reservado<br>para la quinceañera</span>
       </div>
     </section>
   </div>
 
   <!-- RSVP -->
-  <div class="band band-cream">
+  <div class="band band-blue">
     <section class="reveal rsvp">
       <div class="section-eyebrow">Confirma tu asistencia</div>
       <div class="rsvp-card">
@@ -891,11 +1073,7 @@
 
         <div class="guests-picker">
           <div class="guests-label">Número de asistentes</div>
-          <div class="stepper">
-            <button type="button" class="step-btn" id="guestMinus" aria-label="Restar asistente">−</button>
-            <span class="step-count" id="guestCount">1</span>
-            <button type="button" class="step-btn" id="guestPlus" aria-label="Sumar asistente">+</button>
-          </div>
+          <input type="number" class="rsvp-input" id="guestInput" value="1" min="1" max="10" inputmode="numeric" aria-label="Número de asistentes">
         </div>
 
         <a class="whatsapp-btn" id="whatsappBtn" href="https://wa.me/524434092559?text=%C2%A1Hola!%20Confirmo%20mi%20asistencia%20a%20los%20XV%20a%C3%B1os%20de%20Fernanda%20%F0%9F%8E%89%20Seremos%201%20persona." target="_blank" rel="noopener">
@@ -904,6 +1082,50 @@
         </a>
         <div class="rsvp-deadline">Antes del 01 de noviembre</div>
       </div>
+    </section>
+  </div>
+
+  <!-- GIFTS -->
+  <div class="band band-cream">
+    <section class="reveal">
+      <div class="section-eyebrow">Con todo cariño</div>
+      <div class="section-title">Mesa de regalos</div>
+      <p class="gift-intro">Tu compañía es mi mejor regalo. Si deseas tener un detalle conmigo, contaremos con un buzón de sobres en la recepción, o aquí encontrarás algunas sugerencias:</p>
+      <div class="gift-grid">
+        <!-- EDITAR AQUÍ: reemplacen href="#" por el link real de la mesa de regalos de Amazon -->
+        <a class="gift-card" href="#" target="_blank" rel="noopener">
+          <div class="gift-store">Amazon</div>
+          <div class="gift-note">Agregar link</div>
+        </a>
+        <!-- EDITAR AQUÍ: en cuanto tengan el link directo de Liverpool, cambien el href="#"
+             por ese link y borren el texto del folio (ya no haría falta buscarlo a mano) -->
+        <a class="gift-card" href="https://www.liverpool.com.mx/tienda/mesa-de-regalos" target="_blank" rel="noopener">
+          <div class="gift-store">Liverpool</div>
+          <div class="gift-note">Evento No. 52033529</div>
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOTO 3 -->
+  <div class="band band-blue">
+    <section class="reveal">
+      <div class="section-eyebrow">Un momento más para recordar</div>
+      <div class="photo-wrap">
+        <div class="photo-frame" id="photoFrame3">
+          Foto de Fernanda<br>próximamente
+          <!-- EDITAR AQUÍ: reemplacen este texto por
+               <img src="foto-fernanda-3.jpg" alt="Fernanda"> -->
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- CIERRE -->
+  <div class="band band-cream">
+    <section class="reveal closing">
+      <div class="closing-text">¡Te Esperamos!</div>
+      <div class="closing-name">Fer</div>
     </section>
   </div>
 
@@ -999,30 +1221,25 @@
     }
   })();
 
-  // ---------- Selector de número de asistentes ----------
+  // ---------- Número de asistentes (RSVP) ----------
   (function(){
-    const countEl = document.getElementById('guestCount');
-    const minusBtn = document.getElementById('guestMinus');
-    const plusBtn = document.getElementById('guestPlus');
+    const input = document.getElementById('guestInput');
     const waBtn = document.getElementById('whatsappBtn');
     const WA_NUMBER = '524434092559';
-    let guests = 1;
     const MIN = 1, MAX = 10;
 
     function updateLink(){
-      countEl.textContent = guests;
+      let guests = parseInt(input.value, 10);
+      if(isNaN(guests)) guests = MIN;
+      guests = Math.min(MAX, Math.max(MIN, guests));
+      input.value = guests;
       const persona = guests === 1 ? 'persona' : 'personas';
       const text = `¡Hola! Confirmo mi asistencia a los XV años de Fernanda 🎉 Seremos ${guests} ${persona}.`;
       waBtn.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
     }
 
-    minusBtn.addEventListener('click', ()=>{
-      if(guests > MIN){ guests--; updateLink(); }
-    });
-    plusBtn.addEventListener('click', ()=>{
-      if(guests < MAX){ guests++; updateLink(); }
-    });
-
+    input.addEventListener('input', updateLink);
+    input.addEventListener('change', updateLink);
     updateLink();
   })();
 
@@ -1055,13 +1272,9 @@
     }).catch(()=>{
       // el navegador bloqueó el autoplay; esperamos interacción del invitado
       setPlayingState(false);
+      setTimeout(()=>{ if(!isPlaying) showBubble(); }, 300);
     });
   }
-
-  window.addEventListener('load', ()=>{
-    tryAutoplay();
-    setTimeout(()=>{ if(!isPlaying) showBubble(); }, 1500);
-  });
 
   // primer toque o scroll del invitado desbloquea el audio si el autoplay falló
   let unlocked = false;
@@ -1082,6 +1295,34 @@
       bgm.play().then(()=>{ setPlayingState(true); }).catch(()=>{});
     }
   });
+
+  // ---------- Sobre de entrada (envelope gate) ----------
+  (function(){
+    const gate = document.getElementById('envelopeGate');
+    const envelope = document.getElementById('envelope');
+    let opened = false;
+
+    function openGate(){
+      if(opened) return;
+      opened = true;
+      envelope.classList.add('open');
+      // el clic del invitado cuenta como gesto del usuario: aprovechamos
+      // ese mismo instante para intentar arrancar la música
+      unlocked = true;
+      tryAutoplay();
+
+      setTimeout(()=>{ gate.classList.add('closing'); }, 750);
+      setTimeout(()=>{
+        gate.style.display = 'none';
+        document.body.classList.remove('gate-active');
+      }, 1450);
+    }
+
+    gate.addEventListener('click', openGate);
+    gate.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openGate(); }
+    });
+  })();
 </script>
 
 </body>
