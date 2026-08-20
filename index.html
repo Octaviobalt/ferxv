@@ -52,7 +52,10 @@
   body::before{
     content:'';
     position: fixed;
-    inset: -20%;
+    top: -45%;
+    left: -45%;
+    width: 190%;
+    height: 190%;
     z-index: -3;
     background: linear-gradient(120deg,
       rgba(198,168,92,0.22) 0%,
@@ -61,13 +64,14 @@
       rgba(250,246,236,0) 68%,
       rgba(198,168,92,0.20) 88%,
       rgba(22,35,63,0.10) 100%);
-    background-size: 300% 300%;
+    will-change: transform;
+    transform: translateZ(0);
     animation: meshMove 20s ease-in-out infinite;
   }
   @keyframes meshMove{
-    0%{ background-position: 10% 20%; }
-    50%{ background-position: 90% 80%; }
-    100%{ background-position: 10% 20%; }
+    0%{ transform: translate3d(0,0,0); }
+    50%{ transform: translate3d(-6%,-6%,0); }
+    100%{ transform: translate3d(0,0,0); }
   }
 
   /* second, slower-drifting layer of soft glows for extra depth */
@@ -79,6 +83,7 @@
     background:
       radial-gradient(ellipse at 30% 70%, rgba(198,168,92,0.16), transparent 45%),
       radial-gradient(ellipse at 75% 25%, rgba(22,35,63,0.12), transparent 45%);
+    will-change: transform;
     animation: drift 16s ease-in-out infinite;
   }
   @keyframes drift{
@@ -92,8 +97,7 @@
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    opacity: 0.05;
-    mix-blend-mode: multiply;
+    opacity: 0.035;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
@@ -114,6 +118,7 @@
     background: linear-gradient(135deg, var(--gold-soft), var(--gold));
     border-radius: 0 100% 0 100%;
     opacity: 0;
+    will-change: transform, opacity;
     animation: fall linear infinite;
     animation-duration: var(--dur, 10s);
     animation-delay: var(--delay, 0s);
@@ -147,6 +152,7 @@
     background: radial-gradient(circle, #fff, var(--gold) 55%, transparent 75%);
     box-shadow: 0 0 6px 1px rgba(198,168,92,0.55);
     opacity: 0;
+    will-change: transform, opacity;
     animation: twinkle ease-in-out infinite;
     animation-duration: var(--dur, 4s);
     animation-delay: var(--delay, 0s);
@@ -1251,7 +1257,7 @@
   // ---------- Twinkling sparkles ----------
   (function(){
     const container = document.getElementById('sparklesBg');
-    const COUNT = 40;
+    const COUNT = 24;
     for(let i=0; i<COUNT; i++){
       const s = document.createElement('div');
       s.className = 'sparkle';
@@ -1272,7 +1278,7 @@
   // ---------- Falling petals (decorative; intentionally always on) ----------
   (function(){
     const container = document.getElementById('petalsBg');
-    const COUNT = 30;
+    const COUNT = 20;
     for(let i=0; i<COUNT; i++){
       const p = document.createElement('div');
       p.className = 'petal' + (Math.random() > 0.65 ? ' navy' : '');
