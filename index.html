@@ -837,24 +837,39 @@
   .whatsapp-btn:hover{ background: var(--navy); color: var(--cream); }
   .whatsapp-btn svg{ width: 16px; height: 16px; flex-shrink: 0; }
 
-  .passes-banner{
+  .passes-fixed{
     margin-top: 1.3rem;
-    padding: 0.9rem 1.1rem;
+    padding: 1.3rem 1.1rem;
     border: 1px solid var(--gold);
     background: rgba(198,168,92,0.08);
+    text-align: center;
   }
-  .passes-banner span{ display: block; }
-  #passesFamilyName{
+  .passes-fixed-label{
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--navy-soft);
+    margin-bottom: 0.4rem;
+  }
+  .passes-fixed-name{
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
-    font-size: 1.15rem;
+    font-size: 1.35rem;
     color: var(--navy);
-    margin-bottom: 0.15rem;
+    margin-bottom: 0.9rem;
   }
-  #passesCountText{
-    font-size: 0.85rem;
-    letter-spacing: 0.03em;
+  .passes-fixed-count{
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 2.6rem;
+    line-height: 1;
     color: var(--gold-deep);
+  }
+  .passes-fixed-sub{
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    color: var(--navy-soft);
+    margin-top: 0.3rem;
   }
   .guests-picker{
     margin-top: 1.4rem;
@@ -868,11 +883,6 @@
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--navy-soft);
-  }
-  .guests-hint{
-    font-size: 0.78rem;
-    color: var(--navy-soft);
-    min-height: 1em;
   }
   .rsvp-input{
     width: 100px;
@@ -1171,15 +1181,16 @@
         <!-- EDITAR AQUÍ: nombre de quien confirma (papá, mamá, etc.) -->
         <div class="rsvp-contact">Nombre por confirmar · 443 409 2559</div>
 
-        <div class="passes-banner" id="passesBanner" style="display:none;">
-          <span id="passesFamilyName"></span>
-          <span id="passesCountText"></span>
+        <div class="passes-fixed" id="passesFixed" style="display:none;">
+          <div class="passes-fixed-label">Reservado para</div>
+          <div class="passes-fixed-name" id="passesFamilyName"></div>
+          <div class="passes-fixed-count" id="passesCountNum"></div>
+          <div class="passes-fixed-sub" id="passesCountSub"></div>
         </div>
 
-        <div class="guests-picker">
+        <div class="guests-picker" id="guestsPicker">
           <div class="guests-label">Número de asistentes</div>
           <input type="number" class="rsvp-input" id="guestInput" value="1" min="1" max="10" inputmode="numeric" aria-label="Número de asistentes">
-          <div class="guests-hint" id="guestsHint"></div>
         </div>
 
         <a class="whatsapp-btn" id="whatsappBtn" href="https://wa.me/524434092559?text=%C2%A1Hola!%20Confirmo%20mi%20asistencia%20a%20los%20XV%20a%C3%B1os%20de%20Fernanda%20%F0%9F%8E%89%20Seremos%201%20persona." target="_blank" rel="noopener">
@@ -1329,14 +1340,16 @@
   // ---------- Número de asistentes (RSVP) ----------
   (function(){
     const input = document.getElementById('guestInput');
+    const guestsPicker = document.getElementById('guestsPicker');
     const waBtn = document.getElementById('whatsappBtn');
-    const banner = document.getElementById('passesBanner');
+    const passesFixed = document.getElementById('passesFixed');
     const familyNameEl = document.getElementById('passesFamilyName');
-    const countTextEl = document.getElementById('passesCountText');
-    const hintEl = document.getElementById('guestsHint');
+    const countNumEl = document.getElementById('passesCountNum');
+    const countSubEl = document.getElementById('passesCountSub');
     const WA_NUMBER = '524434092559';
     const MIN = 1;
     let MAX = 10;
+    let fixedGuests = null; // si viene del link, el número ya no se edita
 
     // ---- leer pases asignados desde el link, ej: ?p=3&f=Familia%20P%C3%A9rez ----
     const params = new URLSearchParams(window.location.search);
@@ -1344,27 +1357,31 @@
     const fParam = params.get('f');
 
     if(!isNaN(pParam) && pParam >= 1 && pParam <= 20){
-      MAX = pParam;
-      input.value = MAX;
-      input.max = MAX;
+      fixedGuests = pParam;
 
-      const personaTxt = MAX === 1 ? '1 pase' : `${MAX} pases`;
-      countTextEl.textContent = `Tu invitación incluye ${personaTxt}`;
       if(fParam && fParam.trim()){
-        familyNameEl.textContent = `Reservado para ${fParam.trim()}`;
+        familyNameEl.textContent = fParam.trim();
         familyNameEl.style.display = 'block';
       } else {
         familyNameEl.style.display = 'none';
       }
-      banner.style.display = 'block';
-      hintEl.textContent = `Máximo ${MAX === 1 ? '1 persona' : MAX + ' personas'}`;
+      countNumEl.textContent = fixedGuests;
+      countSubEl.textContent = fixedGuests === 1 ? 'persona' : 'personas';
+
+      passesFixed.style.display = 'block';
+      guestsPicker.style.display = 'none'; // ya no hay nada que escribir
     }
 
     function updateLink(){
-      let guests = parseInt(input.value, 10);
-      if(isNaN(guests)) guests = MIN;
-      guests = Math.min(MAX, Math.max(MIN, guests));
-      input.value = guests;
+      let guests;
+      if(fixedGuests !== null){
+        guests = fixedGuests;
+      } else {
+        guests = parseInt(input.value, 10);
+        if(isNaN(guests)) guests = MIN;
+        guests = Math.min(MAX, Math.max(MIN, guests));
+        input.value = guests;
+      }
       const persona = guests === 1 ? 'persona' : 'personas';
       const text = `¡Hola! Confirmo mi asistencia a los XV años de Fernanda 🎉 Seremos ${guests} ${persona}.`;
       waBtn.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
