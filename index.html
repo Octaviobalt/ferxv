@@ -118,7 +118,6 @@
     background: linear-gradient(135deg, var(--gold-soft), var(--gold));
     border-radius: 0 100% 0 100%;
     opacity: 0;
-    will-change: transform, opacity;
     animation: fall linear infinite;
     animation-duration: var(--dur, 10s);
     animation-delay: var(--delay, 0s);
@@ -149,10 +148,8 @@
     width: var(--size, 3px);
     height: var(--size, 3px);
     border-radius: 50%;
-    background: radial-gradient(circle, #fff, var(--gold) 55%, transparent 75%);
-    box-shadow: 0 0 6px 1px rgba(198,168,92,0.55);
+    background: radial-gradient(circle, #fff, var(--gold) 45%, transparent 72%);
     opacity: 0;
-    will-change: transform, opacity;
     animation: twinkle ease-in-out infinite;
     animation-duration: var(--dur, 4s);
     animation-delay: var(--delay, 0s);
@@ -1298,7 +1295,7 @@
   // ---------- Twinkling sparkles ----------
   (function(){
     const container = document.getElementById('sparklesBg');
-    const COUNT = 24;
+    const COUNT = 14;
     for(let i=0; i<COUNT; i++){
       const s = document.createElement('div');
       s.className = 'sparkle';
@@ -1319,7 +1316,7 @@
   // ---------- Falling petals (decorative; intentionally always on) ----------
   (function(){
     const container = document.getElementById('petalsBg');
-    const COUNT = 20;
+    const COUNT = 12;
     for(let i=0; i<COUNT; i++){
       const p = document.createElement('div');
       p.className = 'petal' + (Math.random() > 0.65 ? ' navy' : '');
