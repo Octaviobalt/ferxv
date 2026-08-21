@@ -26,7 +26,7 @@
 
   *{ box-sizing: border-box; margin:0; padding:0; }
 
-  html{ scroll-behavior: smooth; font-size: 118%; }
+  html{ font-size: 118%; }
 
   body{
     background: var(--cream);
@@ -43,7 +43,7 @@
      alcance a ver la invitación por debajo */
   body.gate-active{
     overflow: hidden;
-    height: 100vh;
+    height: 100svh;
   }
 
   .display{ font-family: 'Cormorant Garamond', serif; }
@@ -180,7 +180,6 @@
   .reveal.in{ opacity: 1; transform: translateY(0); }
   @media (prefers-reduced-motion: reduce){
     .reveal{ opacity: 1; transform: none; transition: none; }
-    html{ scroll-behavior: auto; }
   }
 
   /* ============================================================
@@ -234,12 +233,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: sealFloat 3.2s ease-in-out infinite;
+    animation: sealFloat 4s ease-in-out infinite;
     transition: transform 0.15s ease;
   }
   @keyframes sealFloat{
     0%,100%{ transform: translateY(0); }
-    50%{ transform: translateY(-8px); }
+    50%{ transform: translateY(-6px); }
   }
   .wax-seal.pressed{ transform: scale(0.9); }
   .wax-seal.open{
@@ -1295,7 +1294,7 @@
   // ---------- Twinkling sparkles ----------
   (function(){
     const container = document.getElementById('sparklesBg');
-    const COUNT = 14;
+    const COUNT = 9;
     for(let i=0; i<COUNT; i++){
       const s = document.createElement('div');
       s.className = 'sparkle';
@@ -1316,7 +1315,7 @@
   // ---------- Falling petals (decorative; intentionally always on) ----------
   (function(){
     const container = document.getElementById('petalsBg');
-    const COUNT = 12;
+    const COUNT = 9;
     for(let i=0; i<COUNT; i++){
       const p = document.createElement('div');
       p.className = 'petal' + (Math.random() > 0.65 ? ' navy' : '');
