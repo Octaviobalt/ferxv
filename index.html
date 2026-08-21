@@ -189,7 +189,11 @@
      ============================================================ */
   .seal-gate{
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: auto;
+    height: 100svh;
     z-index: 999;
     display: flex;
     flex-direction: column;
@@ -954,8 +958,9 @@
   /* ---------- music ---------- */
   .music-toggle{
     position: fixed;
-    bottom: 1.4rem;
+    top: calc(100svh - 60px);
     right: 1.4rem;
+    bottom: auto;
     width: 46px;
     height: 46px;
     border-radius: 50%;
@@ -987,8 +992,9 @@
 
   .music-bubble{
     position: fixed;
-    bottom: 5rem;
+    top: calc(100svh - 110px);
     right: 1.4rem;
+    bottom: auto;
     background: var(--navy);
     color: var(--cream);
     font-size: 0.84rem;
