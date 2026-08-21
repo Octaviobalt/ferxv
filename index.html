@@ -3,6 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  // Medimos el alto real de la pantalla UNA sola vez, apenas carga, y lo dejamos fijo.
+  // Así, aunque la barra de direcciones del navegador se esconda o aparezca después,
+  // nuestro contenido ya no se vuelve a mover ni a recentrar.
+  (function(){
+    function lockHeight(){
+      document.documentElement.style.setProperty('--vh100', window.innerHeight + 'px');
+    }
+    lockHeight();
+    window.addEventListener('orientationchange', function(){ setTimeout(lockHeight, 350); });
+  })();
+</script>
 <title>XV Años · Fernanda Baltazar Canchola</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,7 +55,7 @@
      alcance a ver la invitación por debajo */
   body.gate-active{
     overflow: hidden;
-    height: 100svh;
+    height: var(--vh100, 100svh);
   }
 
   .display{ font-family: 'Cormorant Garamond', serif; }
@@ -193,7 +205,7 @@
     left: 0;
     right: 0;
     bottom: auto;
-    height: 100svh;
+    height: var(--vh100, 100svh);
     z-index: 999;
     display: flex;
     flex-direction: column;
@@ -362,7 +374,7 @@
 
   /* ---------- hero / título ---------- */
   .hero{
-    min-height: 100svh;
+    min-height: var(--vh100, 100svh);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -958,7 +970,7 @@
   /* ---------- music ---------- */
   .music-toggle{
     position: fixed;
-    top: calc(100svh - 60px);
+    top: calc(var(--vh100, 100svh) - 60px);
     right: 1.4rem;
     bottom: auto;
     width: 46px;
@@ -992,7 +1004,7 @@
 
   .music-bubble{
     position: fixed;
-    top: calc(100svh - 110px);
+    top: calc(var(--vh100, 100svh) - 110px);
     right: 1.4rem;
     bottom: auto;
     background: var(--navy);
