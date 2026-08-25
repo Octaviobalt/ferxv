@@ -169,8 +169,18 @@
 
   /* alternating bands so no section reads flat */
   .band{ position: relative; }
-  .band-cream{ background: var(--cream); }
-  .band-blue{ background: var(--pale-blue); }
+  .band-cream{
+    background:
+      radial-gradient(circle, rgba(198,168,92,0.09) 1px, transparent 1.2px) 0 0/24px 24px,
+      var(--cream);
+    box-shadow: inset 0 32px 46px -38px rgba(22,35,63,0.10), inset 0 -32px 46px -38px rgba(22,35,63,0.10);
+  }
+  .band-blue{
+    background:
+      radial-gradient(circle, rgba(198,168,92,0.11) 1px, transparent 1.2px) 0 0/24px 24px,
+      var(--pale-blue);
+    box-shadow: inset 0 32px 46px -38px rgba(22,35,63,0.08), inset 0 -32px 46px -38px rgba(22,35,63,0.08);
+  }
 
   /* ---------- reveal on scroll ---------- */
   .reveal{
@@ -429,10 +439,10 @@
   }
 
   .hero-line{
-    width: 46px;
-    height: 1px;
-    background: var(--gold);
+    width: 90px;
+    height: 12px;
     margin: 0 auto 1.4rem;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 90 12'%3E%3Cline x1='0' y1='6' x2='36' y2='6' stroke='%23C6A85C' stroke-width='1'/%3E%3Crect x='41.5' y='1.5' width='9' height='9' fill='none' stroke='%23C6A85C' stroke-width='1' transform='rotate(45 46 6)'/%3E%3Cline x1='54' y1='6' x2='90' y2='6' stroke='%23C6A85C' stroke-width='1'/%3E%3C/svg%3E") no-repeat center;
     transform-origin: center;
     animation: drawLine 1.4s ease 0.3s both;
   }
@@ -485,6 +495,14 @@
     text-align: center;
     margin-bottom: 0.9rem;
   }
+  .section-eyebrow::before{
+    content: '';
+    display: block;
+    width: 72px;
+    height: 12px;
+    margin: 0 auto 0.7rem;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 72 12'%3E%3Cline x1='0' y1='6' x2='27' y2='6' stroke='%23C6A85C' stroke-width='1'/%3E%3Crect x='32.5' y='2.5' width='7' height='7' fill='none' stroke='%23C6A85C' stroke-width='1' transform='rotate(45 36 6)'/%3E%3Cline x1='45' y1='6' x2='72' y2='6' stroke='%23C6A85C' stroke-width='1'/%3E%3C/svg%3E") no-repeat center;
+  }
 
   .section-title{
     font-family: 'Cormorant Garamond', serif;
@@ -499,6 +517,7 @@
   /* ---------- photo frame ---------- */
   .photo-wrap{ display: flex; justify-content: center; }
   .photo-frame{
+    position: relative;
     width: 220px;
     height: 220px;
     border-radius: 50%;
@@ -512,13 +531,24 @@
     font-size: 0.87rem;
     letter-spacing: 0.04em;
     background: rgba(198,168,92,0.05);
-    overflow: hidden;
+  }
+  .photo-frame::before{
+    content: '';
+    position: absolute;
+    inset: -9px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    opacity: 0.5;
+    pointer-events: none;
   }
   /* variante chica, para la foto debajo del título */
   .photo-frame-sm{
     width: 140px;
     height: 140px;
     font-size: 0.76rem;
+  }
+  .photo-frame-sm::before{
+    inset: -7px;
   }
   /* Cuando tengan la foto: reemplacen el contenido del marco por
      <img src="foto-fernanda.jpg" alt="Fernanda" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"> */
@@ -667,13 +697,26 @@
     flex-direction: column;
     align-items: center;
   }
-  .itinerary-dot{
-    width: 10px;
-    height: 10px;
+  .itinerary-icon{
+    width: 27px;
+    height: 27px;
     border-radius: 50%;
-    background: var(--gold);
+    background: rgba(255,255,255,0.55);
+    border: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
-    margin-top: 0.35rem;
+    box-shadow: 0 0 0 6px rgba(198,168,92,0.12);
+  }
+  .itinerary-icon svg{
+    width: 14px;
+    height: 14px;
+    stroke: var(--gold-deep);
+    fill: none;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
   .itinerary-line{
     width: 1px;
@@ -912,6 +955,26 @@
 
   /* ---------- cierre ---------- */
   .closing{ text-align: center; }
+  .closing-monogram{
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    box-shadow: 0 0 0 5px rgba(198,168,92,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.4rem;
+    font-family: 'MonteCarlo', cursive;
+    font-size: 1.9rem;
+    color: var(--gold-deep);
+  }
+  .closing-ornament{
+    width: 90px;
+    height: 12px;
+    margin: 1.3rem auto 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 90 12'%3E%3Cline x1='0' y1='6' x2='36' y2='6' stroke='%23C6A85C' stroke-width='1'/%3E%3Crect x='41.5' y='1.5' width='9' height='9' fill='none' stroke='%23C6A85C' stroke-width='1' transform='rotate(45 46 6)'/%3E%3Cline x1='54' y1='6' x2='90' y2='6' stroke='%23C6A85C' stroke-width='1'/%3E%3C/svg%3E") no-repeat center;
+  }
   .closing-text{
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
@@ -1114,7 +1177,9 @@
         <div class="itinerary-item">
           <div class="itinerary-time-col"><div class="itinerary-time">5:00 pm</div></div>
           <div class="itinerary-rail">
-            <div class="itinerary-dot"></div>
+            <div class="itinerary-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 3v18M7.5 8.5h9"/></svg>
+            </div>
             <div class="itinerary-line"></div>
           </div>
           <div class="itinerary-content">
@@ -1129,7 +1194,9 @@
         <div class="itinerary-item">
           <div class="itinerary-time-col"><div class="itinerary-time">7:00 pm</div></div>
           <div class="itinerary-rail">
-            <div class="itinerary-dot"></div>
+            <div class="itinerary-icon">
+              <svg viewBox="0 0 24 24"><path d="M7 3h10l-1.2 6.2a4 4 0 01-7.6 0z"/><path d="M12 13.2V19M9 19h6"/></svg>
+            </div>
             <div class="itinerary-line"></div>
           </div>
           <div class="itinerary-content">
@@ -1148,7 +1215,9 @@
         <div class="itinerary-item">
           <div class="itinerary-time-col"><div class="itinerary-time">8:00 pm</div></div>
           <div class="itinerary-rail">
-            <div class="itinerary-dot"></div>
+            <div class="itinerary-icon">
+              <svg viewBox="0 0 24 24"><path d="M9 18V5l10-2v13"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="16" r="2"/></svg>
+            </div>
           </div>
           <div class="itinerary-content">
             <div class="itinerary-kicker">Fiesta</div>
@@ -1244,8 +1313,10 @@
   <!-- CIERRE -->
   <div class="band band-cream">
     <section class="reveal closing">
+      <div class="closing-monogram">F</div>
       <div class="closing-text">¡Te Esperamos!</div>
       <div class="closing-name">Fer</div>
+      <div class="closing-ornament"></div>
     </section>
   </div>
 
