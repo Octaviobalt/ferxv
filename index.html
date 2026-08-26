@@ -553,23 +553,48 @@
     height: 56vh;
     min-height: 300px;
     max-height: 480px;
-    background: rgba(198,168,92,0.06);
-    border-top: 1px solid var(--gold);
-    border-bottom: 1px solid var(--gold);
+    background: rgba(198,168,92,0.07);
+    border: 1px dashed var(--gold);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 0.9rem;
     text-align: center;
     color: var(--navy-soft);
     font-size: 0.9rem;
     letter-spacing: 0.04em;
     overflow: hidden;
   }
+  .photo-bleed-icon{
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+  }
+  .photo-bleed-icon svg{
+    width: 21px;
+    height: 21px;
+    stroke: var(--gold-deep);
+    fill: none;
+    stroke-width: 1.3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
   .photo-bleed img{
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+  /* cuando ya haya una foto real (<img>), el marco pasa a línea sólida en vez de punteada */
+  .photo-bleed:has(img){
+    border-style: solid;
+    background: none;
   }
 
   /* ---------- photo frame ---------- */
@@ -1171,8 +1196,11 @@
     <section class="reveal">
       <div class="section-eyebrow">Un momento para recordar</div>
       <div class="photo-bleed reveal-photo" id="photoFrame1">
+        <div class="photo-bleed-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.6"/><path d="M8.5 6l1.3-2h4.4l1.3 2"/></svg>
+        </div>
         Foto de Fernanda<br>próximamente
-        <!-- EDITAR AQUÍ: reemplacen este texto por
+        <!-- EDITAR AQUÍ: reemplacen todo el contenido de este div por
              <img src="foto-fernanda.jpg" alt="Fernanda"> -->
       </div>
     </section>
@@ -1355,8 +1383,11 @@
     <section class="reveal">
       <div class="section-eyebrow">Un momento más para recordar</div>
       <div class="photo-bleed reveal-photo" id="photoFrame3">
+        <div class="photo-bleed-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.6"/><path d="M8.5 6l1.3-2h4.4l1.3 2"/></svg>
+        </div>
         Foto de Fernanda<br>próximamente
-        <!-- EDITAR AQUÍ: reemplacen este texto por
+        <!-- EDITAR AQUÍ: reemplacen todo el contenido de este div por
              <img src="foto-fernanda-3.jpg" alt="Fernanda"> -->
       </div>
     </section>
