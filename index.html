@@ -181,6 +181,23 @@
       var(--pale-blue);
     box-shadow: inset 0 32px 46px -38px rgba(22,35,63,0.08), inset 0 -32px 46px -38px rgba(22,35,63,0.08);
   }
+  .band-navy{
+    background:
+      radial-gradient(circle, rgba(198,168,92,0.14) 1px, transparent 1.2px) 0 0/24px 24px,
+      var(--navy);
+    box-shadow: inset 0 32px 50px -36px rgba(0,0,0,0.35), inset 0 -32px 50px -36px rgba(0,0,0,0.35);
+  }
+  .band-navy .section-title{ color: var(--cream); }
+  .band-navy .section-eyebrow{ color: var(--gold-soft); }
+  .band-navy .itinerary-time{ color: var(--gold-soft); }
+  .band-navy .itinerary-title{ color: var(--cream); }
+  .band-navy .itinerary-kicker{ color: var(--gold); }
+  .band-navy .itinerary-meta{ color: rgba(250,246,236,0.72); }
+  .band-navy .itinerary-line{ background: rgba(250,246,236,0.22); }
+  .band-navy .itinerary-icon{ background: rgba(255,255,255,0.07); border-color: var(--gold); }
+  .band-navy .itinerary-icon svg{ stroke: var(--gold-soft); }
+  .band-navy .itinerary-tag{ color: var(--gold-soft); border-color: var(--gold-soft); }
+  .band-navy .detail-link{ color: var(--gold-soft); }
 
   /* ---------- reveal on scroll ---------- */
   .reveal{
@@ -189,8 +206,21 @@
     transition: opacity 0.9s ease, transform 0.9s ease;
   }
   .reveal.in{ opacity: 1; transform: translateY(0); }
+
+  /* revelado tipo "cortina" para las fotos: solo reacciona al scroll,
+     no es una animación continua */
+  .reveal-photo{
+    clip-path: inset(0 0 100% 0);
+    transform: scale(1.08);
+    transition: clip-path 1.1s cubic-bezier(.16,1,.3,1), transform 1.5s cubic-bezier(.16,1,.3,1);
+  }
+  .reveal-photo.in{
+    clip-path: inset(0 0 0% 0);
+    transform: scale(1);
+  }
   @media (prefers-reduced-motion: reduce){
     .reveal{ opacity: 1; transform: none; transition: none; }
+    .reveal-photo{ clip-path: none; transform: none; transition: none; }
   }
 
   /* ============================================================
@@ -514,6 +544,34 @@
     color: var(--navy);
   }
 
+  /* ---------- foto a sangre completa ---------- */
+  /* usa margen negativo igual al padding de la sección (no 100vw) para
+     evitar cualquier riesgo de desbordamiento horizontal */
+  .photo-bleed{
+    width: calc(100% + 3.5rem);
+    margin: 1.7rem -1.75rem 0;
+    height: 56vh;
+    min-height: 300px;
+    max-height: 480px;
+    background: rgba(198,168,92,0.06);
+    border-top: 1px solid var(--gold);
+    border-bottom: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--navy-soft);
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    overflow: hidden;
+  }
+  .photo-bleed img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
   /* ---------- photo frame ---------- */
   .photo-wrap{ display: flex; justify-content: center; }
   .photo-frame{
@@ -568,9 +626,10 @@
   }
   .celebration-line strong{
     display: inline-block;
-    margin-top: 0.3rem;
+    margin-top: 0.4rem;
     font-weight: 600;
-    font-size: clamp(1.7rem, 6.5vw, 2.5rem);
+    font-size: clamp(2.1rem, 8.5vw, 3.3rem);
+    line-height: 1.15;
     color: var(--gold-deep);
   }
   .countdown{
@@ -979,17 +1038,14 @@
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-weight: 500;
-    font-size: clamp(2.1rem, 7vw, 3rem);
+    font-size: clamp(2.6rem, 9.5vw, 4rem);
     color: var(--navy);
-    margin-bottom: 0.7rem;
+    margin-bottom: 0.8rem;
   }
   .closing-name{
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-weight: 500;
-    font-size: clamp(2.1rem, 7vw, 3rem);
+    font-family: 'MonteCarlo', cursive;
+    font-size: clamp(2.8rem, 11vw, 4.4rem);
     color: var(--gold-deep);
-    letter-spacing: 0.08em;
   }
 
   /* ---------- footer ---------- */
@@ -1110,16 +1166,14 @@
   <!-- pétalos decorativos, siempre activos (a propósito, sin depender de prefers-reduced-motion) -->
   <div class="petals-bg" id="petalsBg"></div>
 
-  <!-- FOTO 1: grande, lo primero que se ve al abrir el sobre -->
+  <!-- FOTO 1: grande, a sangre completa, lo primero que se ve al abrir el sobre -->
   <div class="band band-cream">
     <section class="reveal">
       <div class="section-eyebrow">Un momento para recordar</div>
-      <div class="photo-wrap">
-        <div class="photo-frame" id="photoFrame1">
-          Foto de Fernanda<br>próximamente
-          <!-- EDITAR AQUÍ: reemplacen este texto por
-               <img src="foto-fernanda.jpg" alt="Fernanda"> -->
-        </div>
+      <div class="photo-bleed reveal-photo" id="photoFrame1">
+        Foto de Fernanda<br>próximamente
+        <!-- EDITAR AQUÍ: reemplacen este texto por
+             <img src="foto-fernanda.jpg" alt="Fernanda"> -->
       </div>
     </section>
   </div>
@@ -1167,7 +1221,7 @@
   </div>
 
   <!-- ITINERARIO -->
-  <div class="band band-blue">
+  <div class="band band-navy">
     <section class="reveal">
       <div class="section-eyebrow">Celebración</div>
       <div class="section-title">Itinerario del día</div>
@@ -1296,16 +1350,14 @@
     </section>
   </div>
 
-  <!-- FOTO 3 -->
+  <!-- FOTO 3: a sangre completa -->
   <div class="band band-blue">
     <section class="reveal">
       <div class="section-eyebrow">Un momento más para recordar</div>
-      <div class="photo-wrap">
-        <div class="photo-frame" id="photoFrame3">
-          Foto de Fernanda<br>próximamente
-          <!-- EDITAR AQUÍ: reemplacen este texto por
-               <img src="foto-fernanda-3.jpg" alt="Fernanda"> -->
-        </div>
+      <div class="photo-bleed reveal-photo" id="photoFrame3">
+        Foto de Fernanda<br>próximamente
+        <!-- EDITAR AQUÍ: reemplacen este texto por
+             <img src="foto-fernanda-3.jpg" alt="Fernanda"> -->
       </div>
     </section>
   </div>
@@ -1365,9 +1417,9 @@
         if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
       });
     }, { threshold: 0.15 });
-    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    document.querySelectorAll('.reveal, .reveal-photo').forEach(el=>io.observe(el));
   } else {
-    document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+    document.querySelectorAll('.reveal, .reveal-photo').forEach(el=>el.classList.add('in'));
   }
 
   // ---------- Twinkling sparkles ----------
