@@ -596,12 +596,68 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center 20%;
     display: block;
   }
   /* cuando ya haya una foto real (<img>), el marco pasa a línea sólida en vez de punteada */
   .photo-bleed:has(img){
     border-style: solid;
     background: none;
+  }
+
+  /* ---------- galería mosaico (fotos extra) ---------- */
+  .photo-gallery{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+  }
+  .gallery-item{
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border: 1px dashed var(--gold);
+    background: rgba(198,168,92,0.07);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    overflow: hidden;
+    text-align: center;
+    padding: 0.4rem;
+  }
+  .gallery-item img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 18%;
+    display: block;
+  }
+  .gallery-item:has(img){
+    border-style: solid;
+    background: none;
+  }
+  .gallery-item-icon{
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+  }
+  .gallery-item-icon svg{
+    width: 12px;
+    height: 12px;
+    stroke: var(--gold-deep);
+    fill: none;
+    stroke-width: 1.3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .gallery-item .photo-tag{
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
   }
 
   /* ---------- photo frame ---------- */
@@ -643,7 +699,7 @@
   /* Cuando tengan la foto: reemplacen el contenido del marco por
      <img src="foto-fernanda.jpg" alt="Fernanda" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"> */
   .photo-frame img{
-    width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+    width: 100%; height: 100%; object-fit: cover; object-position: center 22%; border-radius: 50%;
   }
 
   /* ---------- countdown ---------- */
@@ -1203,13 +1259,7 @@
     <section class="reveal">
       <div class="section-eyebrow">Un momento para recordar</div>
       <div class="photo-bleed reveal-photo" id="photoFrame1">
-        <div class="photo-bleed-icon">
-          <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.6"/><path d="M8.5 6l1.3-2h4.4l1.3 2"/></svg>
-        </div>
-        <div class="photo-tag">Foto 1 de 3</div>
-        Foto de Fernanda<br>próximamente
-        <!-- EDITAR AQUÍ: reemplacen todo el contenido de este div por
-             <img src="foto-fernanda.jpg" alt="Fernanda"> -->
+        <img src="foto-fernanda.jpg" alt="Fernanda">
       </div>
     </section>
   </div>
@@ -1222,9 +1272,7 @@
       <div class="hero-line"></div>
       <div class="photo-wrap">
         <div class="photo-frame photo-frame-sm" id="photoFrameSmall">
-          <div class="photo-tag">Foto 2 de 3</div>
-          <!-- EDITAR AQUÍ: reemplacen todo el contenido de este div por
-               <img src="foto-fernanda-2.jpg" alt="Fernanda"> -->
+          <img src="foto-fernanda-2.jpg" alt="Fernanda">
         </div>
       </div>
     </div>
@@ -1390,13 +1438,35 @@
     <section class="reveal">
       <div class="section-eyebrow">Un momento más para recordar</div>
       <div class="photo-bleed reveal-photo" id="photoFrame3">
-        <div class="photo-bleed-icon">
-          <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.6"/><path d="M8.5 6l1.3-2h4.4l1.3 2"/></svg>
+        <img src="foto-fernanda-3.jpg" alt="Fernanda">
+      </div>
+    </section>
+
+    <!-- GALERÍA: espacios para las fotos extra (4 a 8 de 8) -->
+    <section class="reveal">
+      <div class="section-eyebrow">Más momentos</div>
+      <div class="photo-gallery">
+
+        <div class="gallery-item" id="galleryPhoto4">
+          <img src="foto-fernanda-4.jpg" alt="Fernanda">
         </div>
-        <div class="photo-tag">Foto 3 de 3</div>
-        Foto de Fernanda<br>próximamente
-        <!-- EDITAR AQUÍ: reemplacen todo el contenido de este div por
-             <img src="foto-fernanda-3.jpg" alt="Fernanda"> -->
+
+        <div class="gallery-item" id="galleryPhoto5">
+          <img src="foto-fernanda-5.jpg" alt="Fernanda">
+        </div>
+
+        <div class="gallery-item" id="galleryPhoto6">
+          <img src="foto-fernanda-6.jpg" alt="Fernanda">
+        </div>
+
+        <div class="gallery-item" id="galleryPhoto7">
+          <img src="foto-fernanda-7.jpg" alt="Fernanda">
+        </div>
+
+        <div class="gallery-item" id="galleryPhoto8">
+          <img src="foto-fernanda-8.jpg" alt="Fernanda">
+        </div>
+
       </div>
     </section>
   </div>
