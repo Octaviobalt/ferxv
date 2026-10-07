@@ -548,6 +548,7 @@
   /* usa margen negativo igual al padding de la sección (no 100vw) para
      evitar cualquier riesgo de desbordamiento horizontal */
   .photo-bleed{
+    position: relative;
     width: calc(100% + 3.5rem);
     margin: 1.7rem -1.75rem 0;
     height: 56vh;
@@ -565,6 +566,16 @@
     font-size: 0.9rem;
     letter-spacing: 0.04em;
     overflow: hidden;
+    box-shadow: 0 10px 28px rgba(22,35,63,0.16);
+  }
+  /* marco interior doble, solo visible cuando ya hay foto real */
+  .photo-bleed:has(img)::after{
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 1px solid rgba(250,246,236,0.8);
+    pointer-events: none;
+    z-index: 2;
   }
   .photo-bleed-icon{
     width: 48px;
@@ -689,12 +700,12 @@
   }
   /* variante chica, para la foto debajo del título */
   .photo-frame-sm{
-    width: 140px;
-    height: 140px;
+    width: 210px;
+    height: 210px;
     font-size: 0.76rem;
   }
   .photo-frame-sm::before{
-    inset: -7px;
+    inset: -9px;
   }
   /* Cuando tengan la foto: reemplacen el contenido del marco por
      <img src="foto-fernanda.jpg" alt="Fernanda" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"> */
@@ -1310,9 +1321,9 @@
       <div class="section-title">Itinerario del día</div>
       <div class="itinerary">
 
-        <!-- EDITAR AQUÍ: templo y hora de la ceremonia (hora abajo es tentativa, solo de prueba) -->
+        <!-- EDITAR AQUÍ: templo de la ceremonia (hora ya confirmada: 6:00 pm) -->
         <div class="itinerary-item">
-          <div class="itinerary-time-col"><div class="itinerary-time">5:00 pm</div></div>
+          <div class="itinerary-time-col"><div class="itinerary-time">6:00 pm</div></div>
           <div class="itinerary-rail">
             <div class="itinerary-icon">
               <svg viewBox="0 0 24 24"><path d="M12 3v18M7.5 8.5h9"/></svg>
@@ -1323,11 +1334,10 @@
             <div class="itinerary-kicker">Ceremonia Religiosa</div>
             <div class="itinerary-title">Templo por confirmar</div>
             <div class="itinerary-meta">Ubicación próximamente</div>
-            <span class="itinerary-tag">Hora tentativa</span>
           </div>
         </div>
 
-        <!-- Recepción: dirección ya confirmada, hora tentativa -->
+        <!-- Recepción: dirección y hora ya confirmadas -->
         <div class="itinerary-item">
           <div class="itinerary-time-col"><div class="itinerary-time">7:00 pm</div></div>
           <div class="itinerary-rail">
@@ -1344,11 +1354,10 @@
               Bosque Camelinas, 58290 Morelia, Mich.<br>
               <a class="detail-link" href="https://www.google.com/maps/search/?api=1&query=Sal%C3%B3n%20de%20Eventos%20La%20Escondida%2C%20Av.%20Jes%C3%BAs%20Sans%C3%B3n%20Flores%2055%2C%20Bosque%20Camelinas%2C%2058290%20Morelia%2C%20Michoac%C3%A1n" target="_blank" rel="noopener">Ver ubicación en el mapa →</a>
             </div>
-            <span class="itinerary-tag">Hora tentativa</span>
           </div>
         </div>
 
-        <!-- Inicio de la fiesta: mismo lugar que la recepción, hora tentativa -->
+        <!-- Inicio de la fiesta: mismo lugar que la recepción, hora ya confirmada -->
         <div class="itinerary-item">
           <div class="itinerary-time-col"><div class="itinerary-time">8:00 pm</div></div>
           <div class="itinerary-rail">
@@ -1360,7 +1369,6 @@
             <div class="itinerary-kicker">Fiesta</div>
             <div class="itinerary-title">¡Que comience el baile!</div>
             <div class="itinerary-meta">Mismo lugar: Salón de Eventos La Escondida</div>
-            <span class="itinerary-tag">Hora tentativa</span>
           </div>
         </div>
 
@@ -1373,10 +1381,6 @@
     <section class="reveal dresscode">
       <div class="section-eyebrow">Código de vestimenta</div>
       <div class="dresscode-title">Formal</div>
-      <div class="dresscode-badge">
-        <span class="dresscode-dot"></span>
-        <span class="dresscode-dot-label">Color azul rey reservado<br>para la quinceañera</span>
-      </div>
     </section>
   </div>
 
