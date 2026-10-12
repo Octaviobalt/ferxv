@@ -1041,7 +1041,8 @@
     margin: 0 auto 1.6rem;
     line-height: 1.65;
   }
-  .gift-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  /* en celular las tarjetas se apilan (una debajo de otra); en pantallas anchas van lado a lado */
+  .gift-grid{ display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; }
   .gift-card{
     border: 1px solid var(--line);
     padding: 1.6rem 1rem;
@@ -1056,6 +1057,25 @@
     transition: border-color 0.25s ease;
   }
   .gift-card:hover{ border-color: var(--gold); }
+  .gift-cta{
+    margin-top: 0.6rem;
+    padding: 0.45rem 1rem;
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--gold-deep);
+    white-space: nowrap;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  }
+  .gift-cta::after{ content: ' \2192'; }
+  .gift-card:hover .gift-cta{
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--cream);
+  }
   .gift-store{
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
@@ -1572,13 +1592,14 @@
       <div class="gift-grid">
         <a class="gift-card" href="https://www.amazon.com.mx/registries/gl/guest-view/MWQJ04KANLOB" target="_blank" rel="noopener">
           <div class="gift-store">Amazon</div>
-          <div class="gift-note">Ver lista de regalos</div>
+          <div class="gift-note">Mesa de regalos</div>
+          <span class="gift-cta">Da clic aquí</span>
         </a>
-        <!-- EDITAR AQUÍ: en cuanto tengan el link directo de Liverpool, cambien el href="#"
-             por ese link y borren el texto del folio (ya no haría falta buscarlo a mano) -->
+        <!-- Liverpool: link directo ya configurado; el folio se deja como respaldo -->
         <a class="gift-card" href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/52033529" target="_blank" rel="noopener">
           <div class="gift-store">Liverpool</div>
           <div class="gift-note">Evento No. 52033529</div>
+          <span class="gift-cta">Da clic aquí</span>
         </a>
       </div>
     </section>
@@ -1635,7 +1656,7 @@
 
   <footer>
     <span class="fnum">XV</span>
-    Fernanda Baltazar Canchola · 21.11.2026
+    Fer · 21.11.2026
   </footer>
   <div class="credit">Sonata para violín en Mi menor, K.304 — W. A. Mozart (dominio público)</div>
 
